@@ -6,9 +6,7 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body data-theme="dracula">
-        <BaseLayout>
-          <Main />
-        </BaseLayout>
+        <Main />
         <NextScript />
       </body>
     </Html>
