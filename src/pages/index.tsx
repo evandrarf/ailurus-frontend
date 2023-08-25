@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col min-h-screen items-center justify-center">
       <div className="bg-neutral p-4 form-control rounded-md">
         <h1 className="font-bold text-3xl mb-4 text-center">Login</h1>
 
