@@ -1,3 +1,4 @@
+import BaseLayout from "@/components/layout/BaseLayout";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
@@ -5,7 +6,9 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body data-theme="dracula">
-        <Main />
+        <BaseLayout>
+          <Main />
+        </BaseLayout>
         <NextScript />
       </body>
     </Html>
