@@ -32,7 +32,7 @@ export function AdminContextProvider({ children }: ComponentWithChildren) {
   return (
     <AdminContext.Provider
       value={{
-        contestConfig: data ?? {},
+        contestConfig: data?.data ?? {},
       }}
     >
       {authToken === "" || error ? (

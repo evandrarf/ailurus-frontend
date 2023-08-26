@@ -1,3 +1,4 @@
+import { BaseResponse } from "@/types/common";
 import ky from "ky-universal";
 
 const api = ky.create({
@@ -15,7 +16,7 @@ async function doApi<T>(
     headers: {
       "X-ADCE-SECRET": JSON.parse(localStorage.getItem("adminToken") ?? ""),
     },
-  }).json<T>();
+  }).json<BaseResponse<T>>();
 }
 
 export const getAdmin = <T>(...args: RequestFnArguments) =>
