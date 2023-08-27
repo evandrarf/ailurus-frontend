@@ -10,6 +10,7 @@ import { Plus } from "@phosphor-icons/react";
 import { deleteAdmin } from "@/components/fetcher/admin";
 import { TeamProps } from "./interface";
 import TeamFormModal from "./TeamFormModal";
+import TeamDetailModal from "./TeamDetailModal";
 
 function TeamRow<TServerMode extends ServerMode>({
   team,
@@ -28,8 +29,12 @@ function TeamRow<TServerMode extends ServerMode>({
     >
       {team.name}
       <div className="flex flex-row gap-2 items-center">
+        <TeamDetailModal
+          btn={<button className="btn btn-primary btn-sm">Detail</button>}
+          teamId={team.id}
+        />
         <TeamFormModal
-          btn={<button className="btn btn-primary btn-sm">Edit</button>}
+          btn={<button className="btn btn-secondary btn-sm">Edit</button>}
           mode="update"
           team={{
             name: team.name,

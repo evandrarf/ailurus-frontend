@@ -1,4 +1,4 @@
-import { ExtendOnServerMode, ServerMode } from "./common";
+import { ExtendOnServerMode, ServerMode, guardServerMode } from "./common";
 
 export type Team<TServerMode extends ServerMode> = ExtendOnServerMode<
   {

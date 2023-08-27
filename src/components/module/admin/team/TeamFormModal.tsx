@@ -72,7 +72,6 @@ function InputRow({ name, label, errorMessage, type }: InputRowProps) {
 }
 
 function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
-  console.log(team);
   const queryClient = useQueryClient();
   const { contestConfig } = useContext(AdminContext);
   const serverMode = contestConfig["SERVER_MODE"] as ServerMode;

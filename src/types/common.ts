@@ -18,3 +18,11 @@ export type ExtendOnServerMode<
   On extends ServerMode,
   TExtension extends {}
 > = TBase & (TServerMode extends On ? TExtension : {});
+
+export function guardServerMode<TFinal>(
+  data: unknown,
+  value: ServerMode,
+  expected: ServerMode
+): data is TFinal {
+  return value == expected;
+}
