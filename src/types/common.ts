@@ -8,6 +8,7 @@ export interface ComponentWithChildren {
 export interface BaseResponse<T> {
   data: T;
   status: "success" | "error";
+  message: string | undefined;
 }
 
 export type ConfigType = Record<string, string>;
