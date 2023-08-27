@@ -69,7 +69,7 @@ export default function AdminLayout({
             href="/admin/service"
           />
         </div>
-        <div className={className}>{children}</div>
+        <div className={"w-full " + className}>{children}</div>
       </div>
     </div>
   );

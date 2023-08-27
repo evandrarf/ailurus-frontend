@@ -16,10 +16,14 @@ export const AdminContext = createContext<AdminContextData>({
 export function AdminContextProvider({ children }: ComponentWithChildren) {
   const ref = useRef<HTMLInputElement>(null);
   const [authToken, setAuthToken] = useAtom(adminTokenAtom);
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["config", authToken],
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["config"],
     queryFn: () => getAdmin<Record<string, string>>("admin/contest/config"),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [authToken, refetch]);
 
   if (isLoading) {
     return (

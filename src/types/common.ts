@@ -7,3 +7,5 @@ export interface BaseResponse<T> {
   data: T;
   status: "success" | "error";
 }
+
+export type ConfigType = Record<string, string>;

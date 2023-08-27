@@ -30,3 +30,9 @@ export const postAdmin = <T>(...args: RequestFnArguments) =>
     ...args[1],
     method: "POST",
   });
+
+export const putAdmin = <T>(...args: RequestFnArguments) =>
+  doApi<T>(args[0], {
+    ...args[1],
+    method: "PUT",
+  });
