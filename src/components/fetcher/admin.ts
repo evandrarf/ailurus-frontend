@@ -1,5 +1,5 @@
 import { BaseResponse } from "@/types/common";
-import ky from "ky-universal";
+import ky, { HTTPError } from "ky-universal";
 import { api } from "./base";
 import { toast } from "react-hot-toast";
 
@@ -22,7 +22,13 @@ async function doApi<T>(
     if (notify) toast.success(response.message ?? "Success", { id: toastId });
     return response;
   } catch (err) {
-    if (notify) toast.error("Failed", { id: toastId });
+    let message = "Unknown error, failed. See developer tools.";
+    if (err instanceof HTTPError) {
+      const errorJson: BaseResponse<never> = await err.response.json();
+      if (errorJson.message) message = errorJson.message;
+    }
+
+    if (notify) toast.error(message, { id: toastId });
     throw err;
   }
 }
