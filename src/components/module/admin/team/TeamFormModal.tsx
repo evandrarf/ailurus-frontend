@@ -161,7 +161,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                   control={methods.control}
                 />
                 <InputRow
-                  name="server.username"
+                  name="server.auth_key"
                   label="Server Auth Key"
                   errorMessage={
                     methods.formState.errors.server?.auth_key?.message ?? ""
