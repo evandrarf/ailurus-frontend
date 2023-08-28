@@ -8,6 +8,7 @@ interface InputRowProps<T> {
   errorMessage: string;
   type?: React.HTMLInputTypeAttribute;
   control?: T;
+  textarea?: boolean;
 }
 
 export function InputRow<T extends FieldValues>({
@@ -15,6 +16,7 @@ export function InputRow<T extends FieldValues>({
   label,
   errorMessage,
   type,
+  textarea,
 }: InputRowProps<T>) {
   const { register } = useFormContext<T>();
 
@@ -24,12 +26,20 @@ export function InputRow<T extends FieldValues>({
         <span className="label-text">{label}</span>
       </label>
 
-      <input
-        type={type ? type : "text"}
-        className="input input-bordered w-full"
-        /* @ts-ignore */
-        {...register(name)}
-      />
+      {textarea ? (
+        <textarea
+          className="textarea textarea-bordered w-full"
+          /* @ts-ignore */
+          {...register(name)}
+        />
+      ) : (
+        <input
+          type={type ? type : "text"}
+          className="input input-bordered w-full"
+          /* @ts-ignore */
+          {...register(name)}
+        />
+      )}
 
       {errorMessage && (
         <label className="label">
