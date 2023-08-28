@@ -25,7 +25,7 @@ export function AdminContextProvider({ children }: ComponentWithChildren) {
     refetch();
   }, [authToken, refetch]);
 
-  if (isLoading) {
+  if (isLoading && !(authToken === "" || error)) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
