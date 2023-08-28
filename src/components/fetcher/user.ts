@@ -11,7 +11,7 @@ async function doApi<T>(
     ...options,
     headers: {
       Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("authToken") ?? ""
+        localStorage.getItem("authToken") ?? "null"
       )}`,
     },
   }).json<BaseResponse<T>>();
