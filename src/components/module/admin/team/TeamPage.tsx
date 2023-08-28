@@ -87,7 +87,11 @@ export default function TeamPage() {
       ) : !!!data ? (
         <div className="flex items-center justify-center">No team to show</div>
       ) : (
-        data.data.map((team) => <TeamRow team={team} key={team.id} />)
+        <div className="flex flex-col gap-4">
+          {data.data.map((team) => (
+            <TeamRow team={team} key={team.id} />
+          ))}
+        </div>
       )}
     </div>
   );

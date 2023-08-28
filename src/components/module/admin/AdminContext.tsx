@@ -8,9 +8,14 @@ import { createContext, useEffect, useRef } from "react";
 
 interface AdminContextData {
   contestConfig: Record<string, string>;
+  getConfig: <T>(config: string) => T;
 }
+
 export const AdminContext = createContext<AdminContextData>({
   contestConfig: {},
+  getConfig<T>(config: string) {
+    return null as T;
+  },
 });
 
 export function AdminContextProvider({ children }: ComponentWithChildren) {
@@ -25,6 +30,10 @@ export function AdminContextProvider({ children }: ComponentWithChildren) {
     refetch();
   }, [authToken, refetch]);
 
+  function getConfig<T>(config: string) {
+    return data?.data[config] as T;
+  }
+
   if (isLoading && !(authToken === "" || error)) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -37,6 +46,7 @@ export function AdminContextProvider({ children }: ComponentWithChildren) {
     <AdminContext.Provider
       value={{
         contestConfig: data?.data ?? {},
+        getConfig,
       }}
     >
       {authToken === "" || error ? (
