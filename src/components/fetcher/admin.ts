@@ -34,10 +34,14 @@ export const getAdmin = <T>(...args: RequestFnArguments) =>
   });
 
 export const postAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(args[0], {
-    ...args[1],
-    method: "POST",
-  });
+  doApi<T>(
+    args[0],
+    {
+      ...args[1],
+      method: "POST",
+    },
+    true
+  );
 
 export const putAdmin = <T>(...args: RequestFnArguments) =>
   doApi<T>(
