@@ -12,6 +12,7 @@ import { Path } from "react-hook-form";
 import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postAdmin, putAdmin } from "@/components/fetcher/admin";
+import { InputRow } from "../common/form";
 
 type TeamInput = {
   name: string;
@@ -26,13 +27,6 @@ type TeamInput = {
   };
 };
 
-interface InputRowProps {
-  name: Path<TeamInput>;
-  label: string;
-  errorMessage: string;
-  type?: React.HTMLInputTypeAttribute;
-}
-
 type TeamFormProps =
   | {
       mode: "new";
@@ -46,30 +40,6 @@ type TeamFormProps =
       team: Partial<TeamInput> | undefined;
       onSave?: () => any;
     };
-
-function InputRow({ name, label, errorMessage, type }: InputRowProps) {
-  const { register } = useFormContext<TeamInput>();
-
-  return (
-    <div className="form-control w-full">
-      <label className="label">
-        <span className="label-text">{label}</span>
-      </label>
-
-      <input
-        type={type ? type : "text"}
-        className="input input-bordered w-full"
-        {...register(name)}
-      />
-
-      {errorMessage && (
-        <label className="label">
-          <span className="label-text-alt">{errorMessage}</span>
-        </label>
-      )}
-    </div>
-  );
-}
 
 function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
   const queryClient = useQueryClient();
@@ -109,17 +79,20 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
           name="name"
           label="Team Name"
           errorMessage={methods.formState.errors.name?.message ?? ""}
+          control={methods.control}
         />
         <InputRow
           name="email"
           label="Email"
           errorMessage={methods.formState.errors.email?.message ?? ""}
+          control={methods.control}
         />
         <InputRow
           name="password"
           label="Password"
           errorMessage={methods.formState.errors.password?.message ?? ""}
           type="password"
+          control={methods.control}
         />
         {serverMode == "private" && (
           <>
@@ -156,6 +129,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                   methods.formState.errors?.server_id?.message ?? ""
                 }
                 type="text"
+                control={methods.control}
               />
             ) : (
               <>
@@ -166,6 +140,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                     methods.formState.errors.server?.host?.message ?? ""
                   }
                   type="text"
+                  control={methods.control}
                 />
                 <InputRow
                   name="server.sshport"
@@ -174,6 +149,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                     methods.formState.errors.server?.sshport?.message ?? ""
                   }
                   type="number"
+                  control={methods.control}
                 />
                 <InputRow
                   name="server.username"
@@ -182,6 +158,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                     methods.formState.errors.server?.username?.message ?? ""
                   }
                   type="text"
+                  control={methods.control}
                 />
                 <InputRow
                   name="server.username"
@@ -190,6 +167,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                     methods.formState.errors.server?.auth_key?.message ?? ""
                   }
                   type="text"
+                  control={methods.control}
                 />
               </>
             )}

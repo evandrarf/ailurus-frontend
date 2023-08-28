@@ -39,3 +39,9 @@ export const deleteAdmin = <T>(...args: RequestFnArguments) =>
     ...args[1],
     method: "DELETE",
   });
+
+export const patchAdmin = <T>(...args: RequestFnArguments) =>
+  doApi<T>(args[0], {
+    ...args[1],
+    method: "PATCH",
+  });

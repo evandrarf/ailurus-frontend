@@ -11,6 +11,7 @@ import { deleteAdmin, getAdmin } from "@/components/fetcher/admin";
 import { ServerProps } from "./interface";
 import { ChallengeServer } from "@/types/server";
 import ServerDetailModal from "./ServerDetailModal";
+import ServerFormModal from "./ServerFormModal";
 
 function ServerRow({ server }: ServerProps) {
   const queryClient = useQueryClient();
@@ -38,6 +39,13 @@ function ServerRow({ server }: ServerProps) {
           server={server}
         />
 
+        <ServerFormModal
+          btn={<button className="btn btn-secondary btn-sm">Edit</button>}
+          server={server}
+          serverId={server.id}
+          mode="update"
+        />
+
         <button
           className="btn btn-error btn-sm"
           onClick={() => {
@@ -61,6 +69,14 @@ export default function TeamPage() {
     <div className="px-4">
       <div className="flex flex-row justify-between">
         <h2 className="pt-2 pb-4 text-2xl font-bold">Server</h2>
+        <ServerFormModal
+          btn={
+            <button className="btn btn-primary">
+              <Plus size={18} /> Add Server
+            </button>
+          }
+          mode="new"
+        />
       </div>
 
       {isLoading ? (
