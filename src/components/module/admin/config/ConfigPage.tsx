@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "../AdminContext";
 import { ConfigType } from "@/types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putAdmin } from "@/components/fetcher/admin";
+import { patchAdmin } from "@/components/fetcher/admin";
 import { EditConfigForm } from "./EditConfigForm";
 
 interface ConfigProps {
@@ -28,7 +28,7 @@ export default function ConfigPage() {
   const [isEditing, setIsEditing] = useState(false);
   const mutateConfig = useMutation({
     mutationFn: (data: ConfigType) =>
-      putAdmin<ConfigType>("admin/contest/config", {
+      patchAdmin<ConfigType>("admin/contest/config", {
         json: {
           configs: data,
         },

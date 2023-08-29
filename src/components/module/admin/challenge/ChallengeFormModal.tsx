@@ -3,7 +3,7 @@ import React, { ReactElement, useContext, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputRow } from "../common/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postAdmin, patchAdmin, putAdmin } from "@/components/fetcher/admin";
+import { postAdmin, patchAdmin } from "@/components/fetcher/admin";
 import { ServerMode, guardServerMode } from "@/types/common";
 import { AdminContext } from "../AdminContext";
 
@@ -38,7 +38,7 @@ function ChallengeForm({ chall, mode, challId, onSave }: ChallengeFormProps) {
       };
       return mode == "new"
         ? postAdmin("admin/challenges/", { json: finalData })
-        : putAdmin("admin/challenges/" + challId, { json: finalData });
+        : patchAdmin("admin/challenges/" + challId, { json: finalData });
     },
   });
 

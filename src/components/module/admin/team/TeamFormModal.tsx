@@ -11,7 +11,7 @@ import { AdminContext } from "../AdminContext";
 import { Path } from "react-hook-form";
 import clsx from "clsx";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postAdmin, putAdmin } from "@/components/fetcher/admin";
+import { postAdmin, patchAdmin } from "@/components/fetcher/admin";
 import { InputRow } from "../common/form";
 
 type TeamInput = {
@@ -53,7 +53,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
     mutationFn: (data: TeamInput) =>
       mode == "new"
         ? postAdmin("admin/teams/", { json: data })
-        : putAdmin("admin/teams/" + teamId, { json: data }),
+        : patchAdmin("admin/teams/" + teamId, { json: data }),
   });
 
   useEffect(() => {
