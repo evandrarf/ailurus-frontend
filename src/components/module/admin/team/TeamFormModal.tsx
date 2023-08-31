@@ -168,6 +168,7 @@ function TeamForm({ team, mode, teamId, onSave }: TeamFormProps) {
                   }
                   type="text"
                   control={methods.control}
+                  textarea
                 />
               </>
             )}
