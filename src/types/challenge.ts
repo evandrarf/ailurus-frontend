@@ -18,5 +18,5 @@ export type Challenge<TServerMode extends ServerMode> = ExtendOnServerMode<
 export type ChallengeDetail<TServerMode extends ServerMode> =
   Challenge<TServerMode> & {
     visibility: number[];
-    config_status: [boolean, string[]];
+    config_status: boolean;
   };

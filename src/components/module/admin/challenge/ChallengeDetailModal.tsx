@@ -56,19 +56,9 @@ function ChallengeDetail({ challId }: { challId: number }) {
         <p>
           Config status:{" "}
           <strong className="font-bold">
-            {chall.config_status[0] ? "OK" : "Missing"}
+            {chall.config_status ? "OK" : "Missing"}
           </strong>
         </p>
-        {!chall.config_status[0] && (
-          <>
-            <strong className="font-bold">Missing files:</strong>
-            <ul className="list-inside list-disc">
-              {chall.config_status[1].map((path) => (
-                <li key={path}>{path}</li>
-              ))}
-            </ul>
-          </>
-        )}
       </div>
     </div>
   );
