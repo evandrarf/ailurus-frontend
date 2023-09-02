@@ -15,4 +15,5 @@ export interface ContestInfo {
   number_round: number;
   number_tick: number;
   tick_duration: number;
+  logo_url: string;
 }

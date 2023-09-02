@@ -19,6 +19,7 @@ export const ContestContext = createContext<ContestContextData>({
     number_tick: 0,
     start_time: "",
     tick_duration: 0,
+    logo_url: "",
   },
 });
 
