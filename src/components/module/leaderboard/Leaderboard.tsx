@@ -13,6 +13,7 @@ interface LeaderboardProps {
 export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
   const userResourcesQuery = useUserResources();
   const scoreboardQuery = useQuery({
+    queryKey: ["leaderboard", isAdmin ? "admin" : "user"],
     queryFn: () =>
       isAdmin
         ? getAdmin<Score[]>("admin/scoreboard/")
