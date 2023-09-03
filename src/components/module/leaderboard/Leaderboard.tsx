@@ -53,7 +53,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
           </tr>
         </thead>
         <tbody>
-          {scoreboardQuery.data?.data.map((team) => (
+          {scoreboardQuery.data?.data?.map((team) => (
             <tr key={team.id}>
               <th>{team.rank}</th>
               <td>{team.name}</td>
