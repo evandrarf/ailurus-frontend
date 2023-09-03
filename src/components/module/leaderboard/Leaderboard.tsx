@@ -1,6 +1,6 @@
 import { getAdmin } from "@/components/fetcher/admin";
 import { getUser, useUserResources } from "@/components/fetcher/user";
-import { Score } from "@/types/scoreboard";
+import { ChallengeScore, Score } from "@/types/scoreboard";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
@@ -45,20 +45,66 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
             Leaderboard is frozen.
           </div>
         )}
+
       <table className="table">
         <thead>
           <tr>
             <th></th>
-            <th className="w-full">Team</th>
-            <th>Score</th>
+            <th>Team</th>
+            {userResourcesQuery.datas.challenges.data.map((chall) => (
+              <th key={chall.id} className="w-12">
+                {chall.name}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {scoreboardQuery.data?.data?.map((team) => (
             <tr key={team.id}>
               <th>{team.rank}</th>
-              <td>{team.name}</td>
-              <td>{team.total_score}</td>
+              <td>
+                <div className="flex flex-col gap-2">
+                  <strong className="font-bold">{team.name}</strong>
+                  <span title="Total Score">{team.total_score}</span>
+                </div>
+              </td>
+
+              {userResourcesQuery.datas.challenges.data.map((chall) => {
+                const challScore: ChallengeScore | undefined =
+                  team.challenges[chall.id.toString()];
+                const serviceState =
+                  userResourcesQuery.datas.serviceStatus.data[
+                    chall.id.toString()
+                  ]?.[team.id.toString()];
+                return (
+                  <td key={chall.id}>
+                    <div className="grid grid-cols-2 font-mono">
+                      <span className="text-error text-xl" title="Attack Score">
+                        {challScore.attack ?? 0}
+                      </span>
+                      <span
+                        className="text-success text-xl"
+                        title="Defend Score"
+                      >
+                        {challScore.defend ?? 0}
+                      </span>
+                      <div className="col-span-2">
+                        <span className="text-error" title="Flag Captured">
+                          FC: {challScore.flag_captured ?? 0}
+                        </span>{" "}
+                        /{" "}
+                        <span className="text-success" title="Flag Stolen">
+                          FS: {challScore.flag_stolen ?? 0}
+                        </span>
+                      </div>
+                      <span title="SLA">{challScore.sla * 100 ?? "?"}%</span>
+                      <span title="State">
+                        {serviceState === 0 ? "Faulty" : "Valid"}
+                      </span>
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
