@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 
 type RequestFnArguments = Parameters<typeof api>;
 
-async function doApi<T>(
+async function doApi<T, TExtra = {}>(
   url: RequestFnArguments[0],
   options: RequestFnArguments[1],
   notify: boolean = false
@@ -18,7 +18,7 @@ async function doApi<T>(
       headers: {
         "X-ADCE-SECRET": JSON.parse(localStorage.getItem("adminToken") ?? ""),
       },
-    }).json<BaseResponse<T>>();
+    }).json<BaseResponse<T, TExtra>>();
     if (notify) toast.success(response.message ?? "Success", { id: toastId });
     return response;
   } catch (err) {
@@ -33,14 +33,14 @@ async function doApi<T>(
   }
 }
 
-export const getAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(args[0], {
+export const getAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(args[0], {
     ...args[1],
     method: "GET",
   });
 
-export const postAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const postAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],
@@ -49,8 +49,8 @@ export const postAdmin = <T>(...args: RequestFnArguments) =>
     true
   );
 
-export const putAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const putAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],
@@ -59,8 +59,8 @@ export const putAdmin = <T>(...args: RequestFnArguments) =>
     true
   );
 
-export const deleteAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const deleteAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],
@@ -69,8 +69,8 @@ export const deleteAdmin = <T>(...args: RequestFnArguments) =>
     true
   );
 
-export const patchAdmin = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const patchAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],

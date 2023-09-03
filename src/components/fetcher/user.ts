@@ -9,7 +9,7 @@ import { HTTPError } from "ky-universal";
 
 type RequestFnArguments = Parameters<typeof api>;
 
-async function doApi<T>(
+async function doApi<T, TExtra = {}>(
   url: RequestFnArguments[0],
   options: RequestFnArguments[1],
   notify: boolean = false
@@ -24,7 +24,7 @@ async function doApi<T>(
           localStorage.getItem("authToken") ?? "null"
         )}`,
       },
-    }).json<BaseResponse<T>>();
+    }).json<BaseResponse<T, TExtra>>();
     if (notify) toast.success(response.message ?? "Success", { id: toastId });
     return response;
   } catch (err) {
@@ -39,14 +39,14 @@ async function doApi<T>(
   }
 }
 
-export const getUser = <T>(...args: RequestFnArguments) =>
-  doApi<T>(args[0], {
+export const getUser = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(args[0], {
     ...args[1],
     method: "GET",
   });
 
-export const postUser = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const postUser = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],
@@ -55,8 +55,8 @@ export const postUser = <T>(...args: RequestFnArguments) =>
     true
   );
 
-export const putUser = <T>(...args: RequestFnArguments) =>
-  doApi<T>(
+export const putUser = <T, TExtra = {}>(...args: RequestFnArguments) =>
+  doApi<T, TExtra>(
     args[0],
     {
       ...args[1],

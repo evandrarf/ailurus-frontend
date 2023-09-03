@@ -4,7 +4,7 @@ import { authTokenAtom } from "@/components/states";
 import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -25,11 +25,19 @@ export default function Home() {
     },
   });
 
+  useEffect(() => {
+    if (authToken && router) router.replace("/dashboard");
+  }, [authToken, router]);
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center px-4">
       {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
       <img
-        src={contest.logo_url.length > 0 ? contest.logo_url:"https://media.discordapp.net/attachments/1107668994477019218/1137735995559772290/Logo_transparent.png?width=680&height=676"}
+        src={
+          contest.logo_url.length > 0
+            ? contest.logo_url
+            : "https://media.discordapp.net/attachments/1107668994477019218/1137735995559772290/Logo_transparent.png?width=680&height=676"
+        }
         width={680}
         height={676}
         className="max-h-64 object-scale-down"

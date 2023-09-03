@@ -5,11 +5,11 @@ export interface ComponentWithChildren {
   className?: string;
 }
 
-export interface BaseResponse<T> {
+export type BaseResponse<T, TExtra = {}> = {
   data: T;
   status: "success" | "error";
   message: string | undefined;
-}
+} & TExtra;
 
 export type ConfigType = Record<string, string>;
 
