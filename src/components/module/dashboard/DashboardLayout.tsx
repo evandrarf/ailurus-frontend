@@ -43,17 +43,17 @@ export default function DashboardLayout({
           <ConfigMenu
             icon={<Flag size={24} />}
             title="Challenges"
-            href="/admin/challenge"
+            href="/dashboard"
           />
           <ConfigMenu
             icon={<Cloud size={24} />}
             title="My Service"
-            href="/admin/service"
+            href="/dashboard/service"
           />
           <ConfigMenu
             icon={<Crown size={24} />}
             title="Leaderboard"
-            href="/admin/leaderboard"
+            href="/leaderboard"
           />
         </div>
         <div className={"w-full " + className}>{children}</div>
