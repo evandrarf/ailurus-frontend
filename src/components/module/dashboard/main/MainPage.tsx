@@ -8,7 +8,7 @@ import React, { useState } from "react";
 
 interface ServiceRowProps {
   chall: Challenge<ServerMode> | undefined;
-  services: Record<string, string[]>;
+  services: Record<string, string[]> | undefined;
 }
 
 interface TeamServiceRowProps {
@@ -105,7 +105,7 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
         </div>
 
         <strong className="font-bold text-lg">Other Services:</strong>
-        {Object.entries(services).map(([teamId, address]) => {
+        {Object.entries(services ?? {}).map(([teamId, address]) => {
           const team = teamsData.data.find(
             (team) => team.id === Number(teamId)
           );
