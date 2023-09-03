@@ -143,6 +143,14 @@ export default function MainPage() {
     );
   }
 
+  if (datas.challenges.data.length == 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        No challenges available
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4 px-4">
       {datas.challenges.data.map((chall) => (
