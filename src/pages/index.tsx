@@ -3,6 +3,7 @@ import { useContestContext } from "@/components/module/ContestContext";
 import { authTokenAtom } from "@/components/states";
 import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -68,6 +69,9 @@ export default function Home() {
         >
           Login
         </button>
+        <Link href="/leaderboard" className="btn btn-secondary mt-4">
+          Leaderboard
+        </Link>
       </div>
     </div>
   );
