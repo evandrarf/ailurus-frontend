@@ -1,6 +1,6 @@
 type ChallengeKey = string;
 type Address = string;
-type TeamKey = number;
+type TeamKey = string;
 export type ServiceList = Record<ChallengeKey, Record<TeamKey, Address[]>>;
 
 // Same thing as enum, but I don't want runtime code

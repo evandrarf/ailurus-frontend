@@ -3,7 +3,7 @@ import { api } from "./base";
 import { useQuery } from "@tanstack/react-query";
 import { Team } from "@/types/team";
 import { Challenge } from "@/types/challenge";
-import { ServiceList } from "@/types/service";
+import { ServerState, ServiceList } from "@/types/service";
 import toast from "react-hot-toast";
 import { HTTPError } from "ky-universal";
 
@@ -83,18 +83,32 @@ export const useUserServices = () =>
     queryFn: () => getUser<ServiceList>("services/"),
   });
 
+export const useUserServicesStatus = () =>
+  useQuery({
+    queryKey: ["user", "services", "status"],
+    queryFn: () =>
+      getUser<Record<string, Record<string, ServerState>>>("services/status"),
+  });
+
 export const useUserResources = () => {
   const teams = useUserTeams();
   const challenges = useUserChallenges();
   const services = useUserServices();
+  const serviceStatus = useUserServicesStatus();
 
   return {
-    isLoading: teams.isLoading || challenges.isLoading || services.isLoading,
-    error: teams.error || challenges.error || services.error,
+    isLoading:
+      teams.isLoading ||
+      challenges.isLoading ||
+      services.isLoading ||
+      serviceStatus.isLoading,
+    error:
+      teams.error || challenges.error || services.error || serviceStatus.error,
     datas: {
       teams: teams.data!,
       challenges: challenges.data!,
       services: services.data!,
+      serviceStatus: serviceStatus.data!,
     },
   };
 };

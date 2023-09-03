@@ -1,7 +1,13 @@
 import { postAdmin, getAdmin } from "@/components/fetcher/admin";
-import { getUser, postUser, useUserResources } from "@/components/fetcher/user";
+import {
+  getUser,
+  postUser,
+  useUserResources,
+  useUserServicesStatus,
+} from "@/components/fetcher/user";
 import { Challenge } from "@/types/challenge";
 import { ServerMode } from "@/types/common";
+import { ServerState } from "@/types/service";
 import { Team } from "@/types/team";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -24,17 +30,21 @@ function TeamServiceRow({
   teamId,
   challId,
 }: TeamServiceRowProps) {
-  const { isFetching: statusFetching, data: status } = useQuery({
-    queryFn: () =>
-      getAdmin<number>(`admin/services/${challId}/teams/${teamId}/status`),
-  });
+  const { isFetching: statusFetching, data: status } = useUserServicesStatus();
+  const state = status?.data[challId.toString()]?.[teamId.toString()];
 
   return (
     <div
       key={teamId}
       className="flex flex-row justify-between p-4 rounded-md bg-base-100 text-base-content items-center"
     >
-      <strong>{teamName}</strong>
+      <div className="flex flex-col gap-2 justify-center">
+        <strong>{teamName}</strong>
+        <span>
+          Status:{" "}
+          {statusFetching ? "Fetching..." : state === 0 ? "Faulty" : "Valid"}
+        </span>
+      </div>
       <ul className="list-inside">
         {addresses.map((addr) => (
           <li key={addr}>{addr}</li>
