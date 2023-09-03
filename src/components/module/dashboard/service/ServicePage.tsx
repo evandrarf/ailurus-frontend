@@ -59,7 +59,7 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
     <details
       className="p-4 rounded-md bg-neutral"
       onClick={(e) => {
-        // e.preventDefault();
+        e.preventDefault();
         setOpen(!isOpen && isUnlocked);
       }}
       open={isOpen}
