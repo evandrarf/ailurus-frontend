@@ -89,8 +89,8 @@ export default function DashboardLayout({
 
           <div className="flex flex-col gap-2 px-4">
             <strong className="font-bold text-xl">Auth Token</strong>
-            <strong>Team ID: {parsedJwt.sub.team.id}</strong>
-            <strong>Team Name: {parsedJwt.sub.team.name}</strong>
+            <strong>Team ID: {parsedJwt?.sub.team.id}</strong>
+            <strong>Team Name: {parsedJwt?.sub.team.name}</strong>
             <code className="break-all p-4 rounded-md bg-base-300 text-sm">
               {authToken}
             </code>
