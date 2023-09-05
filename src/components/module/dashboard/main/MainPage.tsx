@@ -5,12 +5,15 @@ import {
   useUserResources,
   useUserServicesStatus,
 } from "@/components/fetcher/user";
+import { authTokenAtom } from "@/components/states";
+import { parseJwt } from "@/components/utils";
 import { Challenge } from "@/types/challenge";
 import { ServerMode } from "@/types/common";
 import { ServerState } from "@/types/service";
 import { Team } from "@/types/team";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useAtom } from "jotai";
+import React, { useMemo, useState } from "react";
 
 interface ServiceRowProps {
   chall: Challenge<ServerMode> | undefined;
@@ -55,6 +58,7 @@ function TeamServiceRow({
 }
 
 function ServiceRow({ chall, services }: ServiceRowProps) {
+  const [authToken, _] = useAtom(authTokenAtom);
   const { isLoading, error, datas } = useUserResources();
   const { isLoading: detailLoading, data } = useQuery({
     queryKey: ["challenges", chall?.id],
@@ -70,6 +74,10 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
         },
       }),
   });
+  const parsedJwt = useMemo(
+    () => parseJwt<{ sub: { team: Team<"share"> } }>(authToken),
+    [authToken]
+  );
 
   if (isLoading || detailLoading) {
     return (
@@ -115,21 +123,23 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
           </button>
         </div>
 
-        <strong className="font-bold text-lg">Other Services:</strong>
-        {Object.entries(services ?? {}).map(([teamId, address]) => {
-          const team = teamsData.data.find(
-            (team) => team.id === Number(teamId)
-          );
-          return (
-            <TeamServiceRow
-              addresses={address}
-              challId={chall?.id ?? 0}
-              teamId={team?.id ?? 0}
-              teamName={team?.name ?? "TeamNotFound"}
-              key={`${chall?.id}-${team?.id}`}
-            />
-          );
-        })}
+        <strong className="font-bold text-lg">Services:</strong>
+        {Object.entries(services ?? {})
+          .filter((data) => data[0] == parsedJwt?.sub.team.id.toString())
+          .map(([teamId, address]) => {
+            const team = teamsData.data.find(
+              (team) => team.id === Number(teamId)
+            );
+            return (
+              <TeamServiceRow
+                addresses={address}
+                challId={chall?.id ?? 0}
+                teamId={team?.id ?? 0}
+                teamName={team?.name ?? "TeamNotFound"}
+                key={`${chall?.id}-${team?.id}`}
+              />
+            );
+          })}
       </div>
     </details>
   );
