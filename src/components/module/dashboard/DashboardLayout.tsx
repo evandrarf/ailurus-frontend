@@ -94,9 +94,9 @@ export default function DashboardLayout({
               {authToken}
             </code>
             <p>
-              This is your team&apos;s JWT token. You may share it with your
-              team mates to put it inside <code>authToken</code> key of the
-              browser&apos;s local storage.
+              This is your team&apos;s JWT. You can copy and paste on the{" "}
+              <code>Authorization</code> header every time your team submits a
+              flag to our API.
             </p>
           </div>
         </div>
