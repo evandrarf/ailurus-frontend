@@ -12,7 +12,6 @@ interface TeamChallServiceProps {
 }
 
 function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
-  const [isOpen, setOpen] = useState(false);
   const [statusQuery, metaQuery] = useQueries({
     queries: [
       {
@@ -56,19 +55,12 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
   });
 
   return (
-    <details
-      className="p-4 rounded-md bg-neutral"
-      onClick={(e) => {
-        e.preventDefault();
-        setOpen(!isOpen && isUnlocked);
-      }}
-      open={isOpen}
-    >
-      <summary className="font-bold text-lg">
+    <div className="p-4 rounded-md bg-neutral">
+      <h3 className="font-bold text-lg">
         {chall.name} {!isUnlocked && <Lock size={18} className="inline" />}
-      </summary>
+      </h3>
 
-      <div className="flex flex-col gap-2 pt-2 pl-4">
+      <div className="flex flex-col gap-2 pt-2">
         <strong>
           Status:{" "}
           {statusQuery.isFetching
@@ -79,14 +71,25 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
             ? "Faulty"
             : "Valid"}
         </strong>
-        <strong>
-          Meta:{" "}
-          {metaQuery.isFetching
-            ? "Loading..."
-            : metaQuery.error
-            ? "An error occured"
-            : metaQuery.data?.data.meta ?? "Unknown"}
-        </strong>
+
+        {metaQuery.isFetching ? (
+          <strong>"Loading..."</strong>
+        ) : metaQuery.error ? (
+          <strong>"An error occured"</strong>
+        ) : metaQuery.data?.data.meta ? (
+          <>
+            <strong>
+              Applied Patch: {metaQuery.data.data.meta.applied_patch}
+            </strong>
+            <strong>Last Patch: {metaQuery.data.data.meta.last_patch}</strong>
+            <strong>Last Reset: {metaQuery.data.data.meta.last_reset}</strong>
+            <strong>
+              Last Restart: {metaQuery.data.data.meta.last_restart}
+            </strong>
+          </>
+        ) : (
+          <strong>No patch applied</strong>
+        )}
 
         <details>
           <summary className="font-bold">Log</summary>
@@ -95,33 +98,41 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
           </pre>
         </details>
 
-        <div className="flex flex-row gap-2">
-          <input
-            ref={ref}
-            className="file-input file-input-bordered w-full"
-            type="file"
-          />
-          <button
-            className="btn btn-primary"
-            onClick={() => patchService.mutate()}
-          >
-            Patch
-          </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => restartService.mutate()}
-          >
-            Restart
-          </button>
-          <button
-            className="btn btn-error"
-            onClick={() => resetService.mutate()}
-          >
-            Reset
-          </button>
-        </div>
+        {isUnlocked ? (
+          <div className="flex flex-row gap-2">
+            <input
+              ref={ref}
+              className="file-input file-input-bordered w-full"
+              type="file"
+              disabled={!isUnlocked}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={() => patchService.mutate()}
+              disabled={!isUnlocked}
+            >
+              Patch
+            </button>
+            <button
+              className="btn btn-secondary"
+              onClick={() => restartService.mutate()}
+            >
+              Restart
+            </button>
+            <button
+              className="btn btn-error"
+              onClick={() => resetService.mutate()}
+            >
+              Reset
+            </button>
+          </div>
+        ) : (
+          <div className="p-4 bg-base-300 rounded-md">
+            Cannot patch. You have not solved this challenge!
+          </div>
+        )}
       </div>
-    </details>
+    </div>
   );
 }
 

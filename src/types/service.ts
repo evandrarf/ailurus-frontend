@@ -10,5 +10,12 @@ export type ServerState = Faulty | Valid;
 
 export interface ServiceMeta {
   log: string;
-  meta: string;
+  meta: ServiceMetadata;
+}
+
+export interface ServiceMetadata {
+  applied_patch: string;
+  last_patch: string;
+  last_reset: string;
+  last_restart: string;
 }
