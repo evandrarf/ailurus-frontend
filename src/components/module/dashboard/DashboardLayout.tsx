@@ -78,7 +78,6 @@ export default function DashboardLayout({
             className="flex flex-row gap-2 items-center py-3 px-4 hover:bg-neutral rounded-r-full hover:cursor-pointer"
             onClick={() => {
               setAuthToken("");
-              router.push("/");
             }}
           >
             <SignOut size={24} />
