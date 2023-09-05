@@ -101,7 +101,8 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
           <input
             className="w-full input input-bordered"
             placeholder="Flag"
-            onClick={(e) => setFlag(e.currentTarget.value)}
+            value={flag}
+            onChange={(e) => setFlag(e.currentTarget.value)}
           />
           <button
             className="btn btn-primary"
