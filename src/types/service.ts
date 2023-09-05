@@ -10,7 +10,7 @@ export type ServerState = Faulty | Valid;
 
 export interface ServiceMeta {
   log: string;
-  meta: ServiceMetadata;
+  meta: string;
 }
 
 export interface ServiceMetadata {

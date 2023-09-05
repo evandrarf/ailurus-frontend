@@ -72,24 +72,12 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
             : "Valid"}
         </strong>
 
-        {metaQuery.isFetching ? (
-          <strong>"Loading..."</strong>
-        ) : metaQuery.error ? (
-          <strong>"An error occured"</strong>
-        ) : metaQuery.data?.data.meta ? (
-          <>
-            <strong>
-              Applied Patch: {metaQuery.data.data.meta.applied_patch}
-            </strong>
-            <strong>Last Patch: {metaQuery.data.data.meta.last_patch}</strong>
-            <strong>Last Reset: {metaQuery.data.data.meta.last_reset}</strong>
-            <strong>
-              Last Restart: {metaQuery.data.data.meta.last_restart}
-            </strong>
-          </>
-        ) : (
-          <strong>No patch applied</strong>
-        )}
+        <div className="divider m-0" />
+
+        <strong>Metadata:</strong>
+        <pre className="p-4 rounded-md bg-base-300">
+          {metaQuery.data?.data.meta ?? ""}
+        </pre>
 
         <details>
           <summary className="font-bold">Log</summary>
@@ -97,6 +85,8 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
             {metaQuery.data?.data.log ?? ""}
           </pre>
         </details>
+
+        <div className="divider m-0" />
 
         {isUnlocked ? (
           <div className="flex flex-row gap-2">
