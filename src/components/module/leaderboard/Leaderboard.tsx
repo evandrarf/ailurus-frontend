@@ -38,8 +38,8 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
 
   return (
     <div className={className}>
-      {/* @ts-ignore */}
-      {"is_freeze" in scoreboardQuery.data &&
+      {"is_freeze" in (scoreboardQuery?.data ?? {}) &&
+        // @ts-ignore
         scoreboardQuery.data.is_freeze && (
           <div className="my-4 py-2 px-4 bg-primary text-primary-content rounded-md">
             Leaderboard is frozen.
