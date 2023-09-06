@@ -52,7 +52,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
             <th></th>
             <th>Team</th>
             {userResourcesQuery.datas.challenges.data.map((chall) => (
-              <th key={chall.id} className="w-12">
+              <th key={chall.id} className="w-40">
                 {chall.name}
               </th>
             ))}
@@ -97,7 +97,9 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                           FS: {challScore.flag_stolen ?? 0}
                         </span>
                       </div>
-                      <span title="SLA">{challScore.sla * 100 ?? "?"}%</span>
+                      <span title="SLA">
+                        {(challScore.sla * 100).toFixed(2) ?? "?"}%
+                      </span>
                       <span title="State">
                         {serviceState === 0 ? "Faulty" : "Valid"}
                       </span>
