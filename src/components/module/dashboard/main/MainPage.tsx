@@ -74,9 +74,17 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
         },
       }),
   });
+  const { data: unlockedData } = useQuery({
+    queryKey: ["unlocked"],
+    queryFn: () => getUser<number[]>("my/solves"),
+  });
   const parsedJwt = useMemo(
     () => parseJwt<{ sub: { team: Team<"share"> } }>(authToken),
     [authToken]
+  );
+  const challUnlocked = useMemo(
+    () => (unlockedData?.data ?? []).includes(chall?.id ?? -1),
+    [chall]
   );
 
   if (isLoading || detailLoading) {
@@ -140,6 +148,28 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
               />
             );
           })}
+
+        {challUnlocked && (
+          <>
+            <strong className="font-bold text-lg">Other Team Services:</strong>
+            {Object.entries(services ?? {})
+              .filter((data) => data[0] != parsedJwt?.sub.team.id.toString())
+              .map(([teamId, address]) => {
+                const team = teamsData.data.find(
+                  (team) => team.id === Number(teamId)
+                );
+                return (
+                  <TeamServiceRow
+                    addresses={address}
+                    challId={chall?.id ?? 0}
+                    teamId={team?.id ?? 0}
+                    teamName={team?.name ?? "TeamNotFound"}
+                    key={`${chall?.id}-${team?.id}`}
+                  />
+                );
+              })}
+          </>
+        )}
       </div>
     </details>
   );
