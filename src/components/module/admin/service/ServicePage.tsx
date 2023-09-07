@@ -5,6 +5,7 @@ import { ServiceList } from "@/types/service";
 import { Team } from "@/types/team";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
+import ConfirmModal from "../../common/Modal/ConfirmModal";
 
 interface ServiceRowProps {
   chall: Challenge<ServerMode> | undefined;
@@ -70,18 +71,20 @@ function TeamServiceRow({
       </div>
 
       <div className="flex flex-row gap-2">
-        <button
-          className="btn btn-error btn-sm"
-          onClick={() => resetMutation.mutate()}
+        <ConfirmModal
+          action="reset"
+          btn={<button className="btn btn-error btn-sm">Reset</button>}
+          onAction={() => resetMutation.mutate()}
         >
-          Reset
-        </button>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={() => restartMutation.mutate()}
+          Are you sure you want to reset?
+        </ConfirmModal>
+        <ConfirmModal
+          action="restart"
+          btn={<button className="btn btn-primary btn-sm">Restart</button>}
+          onAction={() => restartMutation.mutate()}
         >
-          Restart
-        </button>
+          Are you sure you want to restart?
+        </ConfirmModal>
       </div>
     </div>
   );

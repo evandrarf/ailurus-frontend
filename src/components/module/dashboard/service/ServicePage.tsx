@@ -5,6 +5,7 @@ import { ServerState, ServiceMeta } from "@/types/service";
 import { Lock } from "@phosphor-icons/react";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import React, { useMemo, useRef, useState } from "react";
+import ConfirmModal from "../../common/Modal/ConfirmModal";
 
 interface TeamChallServiceProps {
   chall: Challenge<ServerMode>;
@@ -103,18 +104,21 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
             >
               Patch
             </button>
-            <button
-              className="btn btn-secondary"
-              onClick={() => restartService.mutate()}
+
+            <ConfirmModal
+              action="restart"
+              btn={<button className="btn btn-secondary">Restart</button>}
+              onAction={() => restartService.mutate()}
             >
-              Restart
-            </button>
-            <button
-              className="btn btn-error"
-              onClick={() => resetService.mutate()}
+              Are you sure you want to restart?
+            </ConfirmModal>
+            <ConfirmModal
+              action="reset"
+              btn={<button className="btn btn-error">Reset</button>}
+              onAction={() => resetService.mutate()}
             >
-              Reset
-            </button>
+              Are you sure you want to reset?
+            </ConfirmModal>
           </div>
         ) : (
           <div className="p-4 bg-base-300 rounded-md">
