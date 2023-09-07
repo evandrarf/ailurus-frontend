@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { InputRow } from "../common/form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postAdmin, patchAdmin } from "@/components/fetcher/admin";
+import Modal from "../../common/Modal/Modal";
 
 type ServerFormData = Omit<ChallengeServer, "id">;
 interface ServerFormProps {
@@ -81,23 +82,16 @@ export default function ServerFormModal({
 }: ServerFormProps & {
   btn: ReactElement;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
   return (
-    <>
-      <a onClick={() => ref.current?.showModal()}>{btn}</a>
-      <dialog className="modal" ref={ref}>
-        <div className="modal-box">
-          <ServerForm
-            server={server}
-            mode={mode}
-            serverId={serverId}
-            onSave={() => ref.current?.close()}
-          />
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
-    </>
+    <Modal btn={btn} showClose>
+      {({ ref }) => (
+        <ServerForm
+          server={server}
+          mode={mode}
+          serverId={serverId}
+          onSave={() => ref.current?.close()}
+        />
+      )}
+    </Modal>
   );
 }
