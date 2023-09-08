@@ -55,7 +55,18 @@ export default function DashboardLayout({
 
   return (
     <div>
-      <h1 className="ml-4 py-4 text-2xl font-bold">{contest.event_name}</h1>
+      <div className="p-4 flex flex-row justify-between">
+        <h1 className="text-2xl font-bold">{contest.event_name}</h1>
+        <strong className="font-bold text-2xl">
+          {contest.event_status.state === "finished"
+            ? "Event Finished!"
+            : contest.event_status.state === "not started"
+            ? "Not Started"
+            : contest.event_status.state === "running"
+            ? `Round: ${contest.event_status.current_round} / Tick: ${contest.event_status.current_tick}`
+            : "Unknown event state"}
+        </strong>
+      </div>
       <div className="flex flex-row gap-8">
         <div className="flex flex-col gap-2 basis-[24rem]">
           <ConfigMenu

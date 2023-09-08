@@ -1,6 +1,9 @@
 type EventState =
   | {
-      state: "not started" | "finished";
+      state: "not started";
+    }
+  | {
+      state: "finished";
     }
   | {
       state: "running";
