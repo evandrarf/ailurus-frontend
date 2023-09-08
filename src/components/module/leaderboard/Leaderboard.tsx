@@ -65,7 +65,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
               <td>
                 <div className="flex flex-col gap-2">
                   <strong className="font-bold">{team.name}</strong>
-                  <span title="Total Score">{team.total_score}</span>
+                  <span title="Total Score">{team.total_score.toFixed(2)}</span>
                 </div>
               </td>
 
@@ -80,13 +80,13 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                   <td key={chall.id}>
                     <div className="grid grid-cols-2 font-mono">
                       <span className="text-error text-xl" title="Attack Score">
-                        {challScore.attack ?? 0}
+                        {challScore.attack.toFixed(2) ?? 0}
                       </span>
                       <span
                         className="text-success text-xl"
                         title="Defend Score"
                       >
-                        {challScore.defense ?? 0}
+                        {challScore.defense.toFixed(2) ?? 0}
                       </span>
                       <div className="col-span-2">
                         <span className="text-error" title="Flag Captured">
