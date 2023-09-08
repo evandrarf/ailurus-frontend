@@ -86,7 +86,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                         className="text-success text-xl"
                         title="Defend Score"
                       >
-                        {challScore.defend ?? 0}
+                        {challScore.defense ?? 0}
                       </span>
                       <div className="col-span-2">
                         <span className="text-error" title="Flag Captured">

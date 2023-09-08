@@ -2,7 +2,7 @@ export interface ChallengeScore {
   flag_captured: number;
   flag_stolen: number;
   attack: number;
-  defend: number;
+  defense: number;
   sla: number;
 }
 
