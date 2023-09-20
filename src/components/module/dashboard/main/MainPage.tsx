@@ -28,10 +28,10 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
   );
 
   return (
-    <div className="card w-1/4 bg-neutral">
+    <div className="card w-72 bg-neutral">
       <div className="card-body">
         <h2 className="card-title justify-center">{chall?.name ?? "ChallengeNotFound"}</h2>
-        <div className="card-actions justify-center pt-5">
+        <div className="card-actions justify-center align-middle pt-5">
             <Link className="btn btn-primary w-full mb-2" href={`/dashboard/challenge/${chall?.id}`}>View Challenge</Link>
             {challUnlocked ?
               <>

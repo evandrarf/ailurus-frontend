@@ -40,15 +40,15 @@ export default function DashboardLayout({
   const { contest } = useContestContext();
   const [authToken, setAuthToken] = useAtom(authTokenAtom);
   const router = useRouter();
-
+  
   const parsedJwt = useMemo(
     () => parseJwt<{ sub: { team: Team<"share"> } }>(authToken),
     [authToken]
   );
-
+  
   useEffect(() => {
     if (!!!authToken && router) router.replace("/");
-  }, [authToken, router]);
+  }, [authTokenAtom, router]);
 
   return (
     <div>
