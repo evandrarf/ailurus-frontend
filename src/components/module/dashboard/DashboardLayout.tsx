@@ -2,10 +2,7 @@ import {
   Cloud,
   Crown,
   Flag,
-  HardDrives,
   SignOut,
-  Users,
-  Wrench,
 } from "@phosphor-icons/react";
 import React, { ReactElement, useEffect, useMemo } from "react";
 import type { Icon } from "@phosphor-icons/react";
