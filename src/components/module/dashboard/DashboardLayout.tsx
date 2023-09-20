@@ -72,11 +72,6 @@ export default function DashboardLayout({
             href="/dashboard"
           />
           <ConfigMenu
-            icon={<Cloud size={24} />}
-            title="My Service"
-            href="/dashboard/service"
-          />
-          <ConfigMenu
             icon={<Crown size={24} />}
             title="Leaderboard"
             href="/leaderboard"
@@ -86,6 +81,7 @@ export default function DashboardLayout({
             className="flex flex-row gap-2 items-center py-3 px-4 hover:bg-neutral rounded-r-full hover:cursor-pointer"
             onClick={() => {
               setAuthToken("");
+              router.replace("/");
             }}
           >
             <SignOut size={24} />
