@@ -22,10 +22,7 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
     queryKey: ["unlocked"],
     queryFn: () => getUser<number[]>("my/solves"),
   });
-  const challUnlocked = useMemo(
-    () => (unlockedData?.data ?? []).includes(chall?.id ?? -1),
-    [chall]
-  );
+  const challUnlocked = (unlockedData?.data ?? []).includes(chall?.id ?? -1);
 
   return (
     <div className="card w-72 bg-neutral">
