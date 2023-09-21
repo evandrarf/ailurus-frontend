@@ -1,6 +1,7 @@
 import {
   getUser,
   postUser,
+  useUserChallenges,
   useUserResources,
 } from "@/components/fetcher/user";
 import { Challenge } from "@/types/challenge";
@@ -14,10 +15,9 @@ import Link from "next/link";
 
 interface ServiceRowProps {
   chall: Challenge<ServerMode> | undefined;
-  services: Record<string, string[]> | undefined;
 }
 
-function ServiceRow({ chall, services }: ServiceRowProps) {
+function ServiceRow({ chall }: ServiceRowProps) {
   const { data: unlockedData } = useQuery({
     queryKey: ["unlocked"],
     queryFn: () => getUser<number[]>("my/solves"),
@@ -51,7 +51,7 @@ function ServiceRow({ chall, services }: ServiceRowProps) {
 }
 
 export default function MainPage() {
-  const { isLoading, error, datas } = useUserResources();
+  const { isLoading, error, data } = useUserChallenges();
   const [flag, setFlag] = useState("");
   const submitFlag = useMutation({
     mutationFn: (flag: string) =>
@@ -78,7 +78,7 @@ export default function MainPage() {
     );
   }
 
-  if (datas.challenges.data.length == 0) {
+  if (data?.data.length == 0) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         No challenges available
@@ -107,10 +107,9 @@ export default function MainPage() {
       </div>
       <div className="divider mx-4"></div>
       <div className="flex flex-wrap gap-4 px-3 justify-center">
-        {datas.challenges.data.map((chall) => (
+        {data?.data.map((chall) => (
           <ServiceRow
             chall={chall}
-            services={datas.services.data[chall.id.toString()]}
             key={"chall-" + chall.id}
           />
         ))}
