@@ -60,7 +60,7 @@ export default function MainPage() {
     mutationFn: (flag: string) =>
       postUser<never>("submit", {
         json: {
-          flags: [flag],
+          flag: flag,
         },
       }),
   });
