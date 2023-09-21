@@ -22,12 +22,14 @@ export default function Home() {
       }),
     onSuccess(data, variables, context) {
       setAuthToken(data.data);
-      router.push("/dashboard");
+      const goto = router.query.goto?.toString() ?? "/dashboard";
+      router.push(decodeURIComponent(goto));
     },
   });
 
   useEffect(() => {
-    if (authToken && router) router.replace("/dashboard");
+    const goto = router.query.goto?.toString() ?? "/dashboard";
+    if (authToken && router) router.replace(decodeURIComponent(goto));
   }, [authToken, router]);
 
   return (

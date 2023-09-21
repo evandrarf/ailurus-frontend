@@ -47,8 +47,8 @@ export default function DashboardLayout({
   );
   
   useEffect(() => {
-    if (!!!authToken && router) router.replace("/");
-  }, [authTokenAtom, router]);
+    if (!!!authToken && router) router.replace(`/?goto=${encodeURIComponent(router.asPath)}`);
+  }, [authToken, router]);
 
   return (
     <div>
