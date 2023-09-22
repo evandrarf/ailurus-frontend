@@ -1,4 +1,5 @@
 import {
+  Article,
   Cloud,
   Crown,
   Flag,
@@ -74,7 +75,11 @@ export default function AdminLayout({
             title="Service"
             href="/admin/service"
           />
-
+          <ConfigMenu
+            icon={<Article size={24} />}
+            title="Submission"
+            href="/admin/submission"
+          />
           <a
             className="flex flex-row gap-2 items-center py-3 px-4 hover:bg-neutral rounded-r-full hover:cursor-pointer"
             onClick={() => {
