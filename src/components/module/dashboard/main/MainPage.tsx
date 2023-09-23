@@ -8,9 +8,7 @@ import { Challenge } from "@/types/challenge";
 import { ServerMode } from "@/types/common";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useMemo, useState } from "react";
-import {
-  Lock,
-} from "@phosphor-icons/react";
+import { Lock } from "@phosphor-icons/react";
 import Link from "next/link";
 
 interface ServiceRowProps {
@@ -27,27 +25,42 @@ function ServiceRow({ chall }: ServiceRowProps) {
   return (
     <div className="card w-72 bg-neutral">
       <div className="card-body">
-        <h2 className="card-title justify-center">{chall?.name ?? "ChallengeNotFound"}</h2>
+        <h2 className="card-title justify-center">
+          {chall?.name ?? "ChallengeNotFound"}
+        </h2>
         <div className="card-actions justify-center align-middle pt-5">
-            <Link className="btn btn-primary w-full mb-2" href={`/dashboard/challenge/${chall?.id}`}>View Challenge</Link>
-            {challUnlocked ?
-              <>
-                <Link className="btn btn-secondary w-full" href={`/dashboard/service/${chall?.id}`}>Manage Service</Link>
-              </>
-              :
-              <>
-                <div className="tooltip tooltip-bottom w-full" data-tip="Solve the challenge to unlock">
-                  <button className="btn btn-outline btn-disabled w-full">
-                    Manage Service
-                    <Lock size={18} className="inline"/>
-                  </button>
-                </div>
-              </>
-            }
+          <Link
+            className="btn btn-primary w-full mb-2"
+            href={`/dashboard/challenge/${chall?.id}`}
+          >
+            View Challenge
+          </Link>
+          {challUnlocked ? (
+            <>
+              <Link
+                className="btn btn-secondary w-full"
+                href={`/dashboard/service/${chall?.id}`}
+              >
+                Manage Service
+              </Link>
+            </>
+          ) : (
+            <>
+              <div
+                className="tooltip tooltip-bottom w-full"
+                data-tip="Solve the challenge to unlock"
+              >
+                <button className="btn btn-outline btn-disabled w-full">
+                  Manage Service
+                  <Lock size={18} className="inline" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function MainPage() {
@@ -108,10 +121,7 @@ export default function MainPage() {
       <div className="divider mx-4"></div>
       <div className="flex flex-wrap gap-4 px-3 justify-center">
         {data?.data.map((chall) => (
-          <ServiceRow
-            chall={chall}
-            key={"chall-" + chall.id}
-          />
+          <ServiceRow chall={chall} key={"chall-" + chall.id} />
         ))}
       </div>
     </div>

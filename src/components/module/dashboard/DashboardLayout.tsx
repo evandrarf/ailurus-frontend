@@ -1,9 +1,4 @@
-import {
-  Cloud,
-  Crown,
-  Flag,
-  SignOut,
-} from "@phosphor-icons/react";
+import { Cloud, Crown, Flag, SignOut } from "@phosphor-icons/react";
 import React, { ReactElement, useEffect, useMemo } from "react";
 import type { Icon } from "@phosphor-icons/react";
 import { ComponentWithChildren } from "@/types/common";
@@ -40,14 +35,15 @@ export default function DashboardLayout({
   const { contest } = useContestContext();
   const [authToken, setAuthToken] = useAtom(authTokenAtom);
   const router = useRouter();
-  
+
   const parsedJwt = useMemo(
     () => parseJwt<{ sub: { team: Team<"share"> } }>(authToken),
     [authToken]
   );
-  
+
   useEffect(() => {
-    if (!!!authToken && router) router.replace(`/?goto=${encodeURIComponent(router.asPath)}`);
+    if (!!!authToken && router)
+      router.replace(`/?goto=${encodeURIComponent(router.asPath)}`);
   }, [authToken, router]);
 
   return (

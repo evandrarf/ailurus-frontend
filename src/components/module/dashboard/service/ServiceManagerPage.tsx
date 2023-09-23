@@ -4,9 +4,9 @@ import { ServerMode } from "@/types/common";
 import { ServerState, ServiceMeta } from "@/types/service";
 import { ArrowDown, ArrowUp, Lock } from "@phosphor-icons/react";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef } from "react";
 import ConfirmModal from "../../common/Modal/ConfirmModal";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 interface TeamChallServiceProps {
   chall: Challenge<ServerMode> | undefined;
@@ -55,17 +55,27 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
         json: { confirm: true },
       }),
   });
-  
-  const faultyDisplay = (<span className="text-error items-center gap-2"><ArrowDown size={20} className="inline" />{" Faulty"}</span>);
-  const validDisplay = (<span className="text-success items-center gap-2"><ArrowUp size={20} className="inline" />{" Valid"}</span>);
+
+  const faultyDisplay = (
+    <span className="text-error items-center gap-2">
+      <ArrowDown size={20} className="inline" />
+      {" Faulty"}
+    </span>
+  );
+  const validDisplay = (
+    <span className="text-success items-center gap-2">
+      <ArrowUp size={20} className="inline" />
+      {" Valid"}
+    </span>
+  );
 
   return (
     <div className="p-4 rounded-md bg-neutral">
       <div className="px-4 pt-4">
-        <div>
-        </div>
+        <div></div>
         <h3 className="font-bold text-xl gap-2">
-          [<span>
+          [
+          <span>
             {statusQuery.isFetching
               ? "Loading..."
               : statusQuery.error
@@ -73,13 +83,14 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
               : statusQuery.data?.data == 0
               ? faultyDisplay
               : validDisplay}
-          </span> ]{"  "}
-          {chall?.name ?? "ChallengeNotFound"} {!isUnlocked && <Lock size={18} className="inline" />}
+          </span>{" "}
+          ]{"  "}
+          {chall?.name ?? "ChallengeNotFound"}{" "}
+          {!isUnlocked && <Lock size={18} className="inline" />}
         </h3>
       </div>
 
       <div className="flex flex-col gap-2 p-4">
-
         <div className="divider m-0" />
 
         <strong>Metadata:</strong>
@@ -138,10 +149,14 @@ function TeamChallService({ chall, isUnlocked }: TeamChallServiceProps) {
 }
 
 export default function ServiceManagerPage() {
-  const router = useRouter()
+  const router = useRouter();
   const challId = router.query.id;
-  
-  const {isLoading: challLoad, error: challError, data: challData} = useQuery({
+
+  const {
+    isLoading: challLoad,
+    error: challError,
+    data: challData,
+  } = useQuery({
     queryKey: ["challenges", challId],
     queryFn: () => getUser<Challenge<ServerMode>>("challenges/" + challId),
   });
@@ -177,9 +192,9 @@ export default function ServiceManagerPage() {
   return (
     <div className="flex flex-col gap-4 px-4">
       <TeamChallService
-          chall={chall}
-          isUnlocked={unlockedIds.includes(chall?.id ?? -1)}
-          key={"chall-" + chall?.id}
+        chall={chall}
+        isUnlocked={unlockedIds.includes(chall?.id ?? -1)}
+        key={"chall-" + chall?.id}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import {
   getUser,
   postUser,
@@ -13,11 +13,7 @@ import { Team } from "@/types/team";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import React, { useMemo, useState } from "react";
-import {
-  ArrowDown,
-  ArrowUp,
-  Lock,
-} from "@phosphor-icons/react";
+import { ArrowDown, ArrowUp, Lock } from "@phosphor-icons/react";
 import Link from "next/link";
 
 interface ServiceRowProps {
@@ -45,9 +41,19 @@ function TeamServiceRow({
 }: TeamServiceRowProps) {
   const { isFetching: statusFetching, data: status } = useUserServicesStatus();
   const state = status?.data[challId.toString()]?.[teamId.toString()];
-  
-  const faultyDisplay = (<span className="text-error items-center gap-2"><ArrowDown size={20} className="inline" />{" Faulty"}</span>);
-  const validDisplay = (<span className="text-success items-center gap-2"><ArrowUp size={20} className="inline" />{" Valid"}</span>);
+
+  const faultyDisplay = (
+    <span className="text-error items-center gap-2">
+      <ArrowDown size={20} className="inline" />
+      {" Faulty"}
+    </span>
+  );
+  const validDisplay = (
+    <span className="text-success items-center gap-2">
+      <ArrowUp size={20} className="inline" />
+      {" Valid"}
+    </span>
+  );
 
   return (
     <div className="flex gap-2 w-full">
@@ -58,7 +64,11 @@ function TeamServiceRow({
         <div className="flex flex-col gap-2 justify-center">
           <strong>{teamName}</strong>
           <span>
-            {statusFetching ? "Fetching..." : state === 0 ? faultyDisplay : validDisplay}
+            {statusFetching
+              ? "Fetching..."
+              : state === 0
+              ? faultyDisplay
+              : validDisplay}
           </span>
         </div>
         <ul className="list-inside">
@@ -68,30 +78,36 @@ function TeamServiceRow({
         </ul>
       </div>
       <div>
-        {isPrivate ?
+        {isPrivate ? (
           <>
-          {challUnlocked ?
-            <>
-              <Link className="btn btn-secondary h-full leading-relaxed" href={`/dashboard/service/${challId}`}>
-                Manage Service
-              </Link>
-            </>
-            :
-            <>
-              <div className="tooltip tooltip-bottom h-full" data-tip="Solve the challenge to unlock">
-                <button className="btn btn-outline h-full btn-disabled">
+            {challUnlocked ? (
+              <>
+                <Link
+                  className="btn btn-secondary h-full leading-relaxed"
+                  href={`/dashboard/service/${challId}`}
+                >
+                  Manage Service
+                </Link>
+              </>
+            ) : (
+              <>
+                <div
+                  className="tooltip tooltip-bottom h-full"
+                  data-tip="Solve the challenge to unlock"
+                >
+                  <button className="btn btn-outline h-full btn-disabled">
                     <span className="leading-relaxed">
                       Manage Service
-                      <Lock size={20} className="mx-auto"/>
+                      <Lock size={20} className="mx-auto" />
                     </span>
-                </button>
-              </div>
-            </>
-          }
+                  </button>
+                </div>
+              </>
+            )}
           </>
-          :
+        ) : (
           <></>
-        }
+        )}
       </div>
     </div>
   );
@@ -119,10 +135,10 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
     () => parseJwt<{ sub: { team: Team<"share"> } }>(authToken),
     [authToken]
   );
-  
+
   const challUnlocked = useMemo(
     () => (unlockedData?.data ?? []).includes(chall?.id ?? -1),
-    [chall]
+    [chall, unlockedData]
   );
 
   const teamsData = teams;
@@ -142,7 +158,10 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
             {chall?.name ?? "ChallengeNotFound"}
           </h1>
         </div>
-        <p className="whitespace-pre-line pb-4 challenge-desc" dangerouslySetInnerHTML={{ __html: chall?.description }}></p>
+        <p
+          className="whitespace-pre-line pb-4 challenge-desc"
+          dangerouslySetInnerHTML={{ __html: chall?.description ?? "" }}
+        ></p>
 
         <div className="flex flex-row gap-2">
           <input
@@ -165,9 +184,7 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
         {Object.entries(services ?? {})
           .filter((data) => data[0] == parsedJwt?.sub.team.id.toString())
           .map(([teamId, address]) => {
-            const team = teamsData.find(
-              (team) => team.id === Number(teamId)
-            );
+            const team = teamsData.find((team) => team.id === Number(teamId));
             return (
               <TeamServiceRow
                 addresses={address}
@@ -183,7 +200,9 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
 
         {challUnlocked && (
           <>
-            <strong className="font-bold text-lg pt-4">Other Team Services:</strong>
+            <strong className="font-bold text-lg pt-4">
+              Other Team Services:
+            </strong>
             {Object.entries(services ?? {})
               .filter((data) => data[0] != parsedJwt?.sub.team.id.toString())
               .map(([teamId, address]) => {
@@ -196,6 +215,8 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
                     challId={chall?.id ?? 0}
                     teamId={team?.id ?? 0}
                     teamName={team?.name ?? "TeamNotFound"}
+                    challUnlocked={challUnlocked}
+                    isPrivate={false}
                     key={`${chall?.id}-${team?.id}`}
                   />
                 );
@@ -208,7 +229,7 @@ function ServiceRow({ chall, services, teams }: ServiceRowProps) {
 }
 
 export default function ChallengePage() {
-  const router = useRouter()
+  const router = useRouter();
   const challId = router.query.id;
 
   const { isLoading, error, datas } = useUserResources();
@@ -243,5 +264,5 @@ export default function ChallengePage() {
       teams={datas.teams.data}
       key={"chall-" + chall?.id}
     />
-  )
+  );
 }
