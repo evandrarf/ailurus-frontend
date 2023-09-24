@@ -11,4 +11,5 @@ export interface AttackLog {
 export interface AttackMarker {
   attackerId: number;
   defenderId: number;
+  color: string;
 }

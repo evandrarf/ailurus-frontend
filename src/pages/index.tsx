@@ -72,10 +72,18 @@ export default function Home() {
           Login
         </button>
         <div className="grid grid-cols-2 gap-4">
-          <Link href="/leaderboard" className="btn btn-secondary mt-4">
+          <Link
+            href="/leaderboard"
+            className="btn btn-secondary mt-4"
+            target="_blank"
+          >
             Leaderboard
           </Link>
-          <Link href="/attackmap" className="btn btn-secondary mt-4">
+          <Link
+            href="/attackmap"
+            className="btn btn-secondary mt-4"
+            target="_blank"
+          >
             Attack Map
           </Link>
         </div>

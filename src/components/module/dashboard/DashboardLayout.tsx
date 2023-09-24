@@ -1,4 +1,4 @@
-import { Cloud, Crown, Flag, SignOut } from "@phosphor-icons/react";
+import { Crown, Flag, MapTrifold, SignOut } from "@phosphor-icons/react";
 import React, { ReactElement, useEffect, useMemo } from "react";
 import type { Icon } from "@phosphor-icons/react";
 import { ComponentWithChildren } from "@/types/common";
@@ -71,6 +71,11 @@ export default function DashboardLayout({
             icon={<Crown size={24} />}
             title="Leaderboard"
             href="/leaderboard"
+          />
+          <ConfigMenu
+            icon={<MapTrifold size={24} />}
+            title="Attack Map"
+            href="/attackmap"
           />
 
           <a

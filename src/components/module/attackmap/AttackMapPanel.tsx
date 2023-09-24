@@ -1,11 +1,11 @@
 import { ServerMode } from "@/types/common";
 import { Team } from "@/types/team";
 import { motion, useAnimation } from "framer-motion";
-import { createRoot } from "react-dom/client";
 import { AttackMarker } from "./interface";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { attackMarkerAtom } from "@/components/states";
+import { randomColor } from "@/components/utils";
 
 interface AttackMapPanelProps {
   teamData?: Team<ServerMode>[];
@@ -25,6 +25,7 @@ interface AttackMapPointProps {
 interface AttackMarkProps {
   attackerId: number;
   defenderId: number;
+  color: string;
   teamLen: number;
 }
 
@@ -48,7 +49,7 @@ function AttackMapPoint({ pointId, pointName, teamLen }: AttackMapPointProps) {
   const pointSize = 100;
   const labelGapSize = 30;
   const { posX, posY } = getCoordinates(pointId, teamLen);
-  
+
   return (
     <g>
       <image
@@ -73,6 +74,7 @@ function AttackMapPoint({ pointId, pointName, teamLen }: AttackMapPointProps) {
 function AttackMarkerLine({
   attackerId,
   defenderId,
+  color,
   teamLen,
 }: AttackMarkProps) {
   const { posX: attackX, posY: attackY } = getCoordinates(attackerId, teamLen);
@@ -89,14 +91,17 @@ function AttackMarkerLine({
   }, [showMarker]);
 
   useEffect(() => {
-    if(isDelete) {
-      const timeoutId = setTimeout(() => setAttackMarker(attackMarker.slice(1)), 10000);
+    if (isDelete) {
+      const timeoutId = setTimeout(
+        () => setAttackMarker(attackMarker.slice(1)),
+        3000
+      );
 
       return () => {
         clearTimeout(timeoutId);
       };
     }
-  })
+  });
 
   const marker = (
     <motion.line
@@ -104,14 +109,14 @@ function AttackMarkerLine({
       y1={attackY + 17}
       x2={defendX + 50}
       y2={defendY + 17}
-      stroke="white"
+      stroke={color}
       strokeWidth="1mm"
       initial={{ pathLength: 0 }}
       animate={showMarker}
       onAnimationComplete={() => setIsDelete(true)}
     />
   );
-  
+
   return marker;
 }
 
@@ -126,8 +131,9 @@ export function AttackMarkerPanel({
         <AttackMarkerLine
           attackerId={val.attackerId}
           defenderId={val.defenderId}
+          color={val.color}
           teamLen={teamLen}
-          key={'marker-' + idx}
+          key={"marker-" + idx}
         />
       ))}
     </g>
