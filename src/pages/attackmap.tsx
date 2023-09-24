@@ -1,5 +1,4 @@
 import AttackMapPage from "@/components/module/attackmap/AttackMapPage";
-import React from "react";
 
 export default function attackmap() {
   return (
