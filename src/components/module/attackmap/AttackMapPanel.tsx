@@ -1,8 +1,30 @@
-import { useUserTeams } from "@/components/fetcher/user";
+import { ServerMode } from "@/types/common";
+import { Team } from "@/types/team";
+import { motion, useAnimation } from "framer-motion";
+import { createRoot } from "react-dom/client";
+import { AttackMarker } from "./interface";
+import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { attackMarkerAtom } from "@/components/states";
+
+interface AttackMapPanelProps {
+  teamData?: Team<ServerMode>[];
+}
+
+interface AttackMarkerPanelProps {
+  markerData: AttackMarker[];
+  teamLen: number;
+}
 
 interface AttackMapPointProps {
   pointId: number;
   pointName: string;
+  teamLen: number;
+}
+
+interface AttackMarkProps {
+  attackerId: number;
+  defenderId: number;
   teamLen: number;
 }
 
@@ -26,11 +48,7 @@ function AttackMapPoint({ pointId, pointName, teamLen }: AttackMapPointProps) {
   const pointSize = 100;
   const labelGapSize = 30;
   const { posX, posY } = getCoordinates(pointId, teamLen);
-  const { posX: defX, posY: defY } = getCoordinates(
-    (pointId + 1) % teamLen,
-    teamLen
-  );
-
+  
   return (
     <g>
       <image
@@ -48,51 +66,87 @@ function AttackMapPoint({ pointId, pointName, teamLen }: AttackMapPointProps) {
       >
         {pointName}
       </text>
-      <line
-        x1={posX + pointSize / 2}
-        y1={posY + 17}
-        x2={defX + pointSize / 2}
-        y2={defY + 17}
-        stroke="white"
-        strokeWidth="1mm"
-      />
     </g>
   );
 }
 
-export default function AttackMapPanel() {
-  const { isLoading, data } = useUserTeams();
+function AttackMarkerLine({
+  attackerId,
+  defenderId,
+  teamLen,
+}: AttackMarkProps) {
+  const { posX: attackX, posY: attackY } = getCoordinates(attackerId, teamLen);
+  const { posX: defendX, posY: defendY } = getCoordinates(defenderId, teamLen);
+  const showMarker = useAnimation();
+  var [attackMarker, setAttackMarker] = useAtom(attackMarkerAtom);
+  var [isDelete, setIsDelete] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+  useEffect(() => {
+    showMarker.start({
+      pathLength: [0, 1],
+      transition: { duration: 0.5 },
+    });
+  }, [showMarker]);
 
-  const teamData = data?.data;
+  useEffect(() => {
+    if(isDelete) {
+      const timeoutId = setTimeout(() => setAttackMarker(attackMarker.slice(1)), 10000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  })
+
+  const marker = (
+    <motion.line
+      x1={attackX + 50}
+      y1={attackY + 17}
+      x2={defendX + 50}
+      y2={defendY + 17}
+      stroke="white"
+      strokeWidth="1mm"
+      initial={{ pathLength: 0 }}
+      animate={showMarker}
+      onAnimationComplete={() => setIsDelete(true)}
+    />
+  );
+  
+  return marker;
+}
+
+export function AttackMarkerPanel({
+  markerData,
+  teamLen,
+}: AttackMarkerPanelProps) {
+  console.log(markerData);
+  return (
+    <g>
+      {markerData.map((val, idx) => (
+        <AttackMarkerLine
+          attackerId={val.attackerId}
+          defenderId={val.defenderId}
+          teamLen={teamLen}
+          key={'marker-' + idx}
+        />
+      ))}
+    </g>
+  );
+}
+
+export function AttackMapPanel({ teamData }: AttackMapPanelProps) {
   const teamLen = teamData?.length ?? 1;
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      version="1.1"
-      id="attack-map"
-      width="100%"
-      height="100%"
-      viewBox="0 0 1500 750"
-    >
-      <g id="entity">
-        {teamData?.map((data, idx) => (
-          <AttackMapPoint
-            pointId={idx}
-            pointName={data.name}
-            teamLen={teamLen}
-            key={"ent-point-" + idx}
-          />
-        ))}
-      </g>
-    </svg>
+    <g id="entity">
+      {teamData?.map((data, idx) => (
+        <AttackMapPoint
+          pointId={idx}
+          pointName={data.name}
+          teamLen={teamLen}
+          key={"ent-point-" + idx}
+        />
+      ))}
+    </g>
   );
 }
