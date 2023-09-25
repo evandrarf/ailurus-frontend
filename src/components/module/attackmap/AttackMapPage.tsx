@@ -2,13 +2,14 @@ import { socketio } from "@/components/fetcher/socket";
 import { useEffect, useState } from "react";
 import AttackLogWindow from "./AttackLogWindow";
 import { AttackLog } from "./interface";
-import { AttackMapPanel, AttackMarkerPanel } from "./AttackMapPanel";
+import { AttackMapPanel } from "./AttackMapPanel";
+import { AttackMarkerPanel } from "./AttackMarkerPanel";
 import { useUserTeams } from "@/components/fetcher/user";
 import { Team } from "@/types/team";
 import { ServerMode } from "@/types/common";
 import { useAtom } from "jotai";
 import { attackMarkerAtom } from "@/components/states";
-import { randomColor } from "@/components/utils";
+import { randomColor } from "./utils";
 
 function teamIdTransform(srcId: number, data?: Team<ServerMode>[]) {
   if (data == undefined) return -1;
