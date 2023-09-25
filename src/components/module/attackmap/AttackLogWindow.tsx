@@ -58,8 +58,8 @@ const AttackLogWindow = ({ attackLogs }: AttackLogWindowProps) => {
 
   return (
     <div
-      className={"fixed rounded-md shadow-lg block w-3/12"}
-      style={{ cursor: isDragging ? "grabbing" : "grab" }}
+      className={"fixed rounded-md shadow-lg block w-1/4"}
+      style={{ cursor: isDragging ? "grabbing" : "grab", left: "75%" }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
