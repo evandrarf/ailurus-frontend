@@ -3,6 +3,7 @@ import {
   Cloud,
   Crown,
   Flag,
+  Gavel,
   HardDrives,
   SignOut,
   Users,
@@ -79,6 +80,11 @@ export default function AdminLayout({
             icon={<Article size={24} />}
             title="Submission"
             href="/admin/submission"
+          />
+          <ConfigMenu
+            icon={<Gavel size={24} />}
+            title="Checker"
+            href="/admin/checker"
           />
           <a
             className="flex flex-row gap-2 items-center py-3 px-4 hover:bg-neutral rounded-r-full hover:cursor-pointer"

@@ -1,32 +1,37 @@
-import { Submission, SubmissionResponse } from "@/types/submission";
+import { Checker, CheckerResponse } from "@/types/checker";
 import { getAdmin } from "@/components/fetcher/admin";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/module/common/Pagination/Pagination";
 
-interface SubmissionRowProps {
-  data: Submission;
+const checkerResultMap: { [index: number]: string } = {
+  0: "Fail",
+  1: "Ok",
+};
+
+interface CheckerRowProps {
+  data: Checker;
 }
 
-function SubmissionRow({ data }: SubmissionRowProps) {
+function CheckerRow({ data }: CheckerRowProps) {
   return (
     <tr>
       <th>{data.id}</th>
       <td>{data.time_created}</td>
       <td>{data.challenge_name}</td>
       <td>{data.team_name}</td>
-      <td>{data.value}</td>
-      <td>{data.verdict ? "Valid" : "Invalid"}</td>
+      <td>{checkerResultMap[data.result] ?? "undefined"}</td>
+      <td><pre>{data.message}</pre></td>
     </tr>
   );
 }
 
-function SubmissionPanel() {
+function CheckerPanel() {
   const searchParams = useSearchParams();
   const { isLoading, data } = useQuery({
     queryKey: ["submissions", searchParams.toString()],
     queryFn: () =>
-      getAdmin<SubmissionResponse>("admin/submission/", {
+      getAdmin<CheckerResponse>("admin/checker/", {
         searchParams: searchParams,
       }),
   });
@@ -47,16 +52,13 @@ function SubmissionPanel() {
                 <th>Time</th>
                 <th>Challenge</th>
                 <th>Team</th>
-                <th>Value</th>
-                <th>Verdict</th>
+                <th>Status</th>
+                <th>Message</th>
               </tr>
             </thead>
             <tbody>
-              {data?.data.submissions.map((submission) => (
-                <SubmissionRow
-                  data={submission}
-                  key={"submission-" + submission.id}
-                />
+              {data?.data.checkers.map((checker) => (
+                <CheckerRow data={checker} key={"checker-" + checker.id} />
               ))}
             </tbody>
           </table>
@@ -71,13 +73,13 @@ function SubmissionPanel() {
   );
 }
 
-export default function SubmissionPage() {
+export default function CheckerPage() {
   return (
     <div className="px-4 justify-center w-full">
       <div className="flex flex-row justify-between">
-        <h2 className="py-2 text-2xl font-bold">Submission</h2>
+        <h2 className="py-2 text-2xl font-bold">Checker</h2>
       </div>
-      <SubmissionPanel />
+      <CheckerPanel />
     </div>
   );
 }
