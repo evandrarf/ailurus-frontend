@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind layout;
+
+.map-entity {
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+    fill: white;
+    color: white;
+    font-size: large;
+}
+
+.challenge-desc a {
+    @apply link;
+}

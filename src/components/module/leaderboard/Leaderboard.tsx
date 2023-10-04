@@ -1,6 +1,13 @@
 import { getAdmin } from "@/components/fetcher/admin";
 import { getUser, useUserResources } from "@/components/fetcher/user";
 import { ChallengeScore, Score } from "@/types/scoreboard";
+import {
+  ArrowDown,
+  ArrowUp,
+  FlagCheckered,
+  ShieldPlus,
+  Skull,
+} from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
@@ -78,31 +85,56 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                   ]?.[team.id.toString()];
                 return (
                   <td key={chall.id}>
-                    <div className="grid grid-cols-2 font-mono">
-                      <span className="text-error text-xl" title="Attack Score">
-                        {challScore.attack.toFixed(2) ?? 0}
-                      </span>
+                    <div className="flex flex-col font-mono text-base">
                       <span
-                        className="text-success text-xl"
+                        className="flex flex-row items-center gap-2"
+                        title="Attack Score"
+                      >
+                        <Skull /> {challScore.attack.toFixed(2) ?? 0}
+                      </span>
+
+                      <span
+                        className="flex flex-row items-center gap-2"
                         title="Defend Score"
                       >
-                        {challScore.defense.toFixed(2) ?? 0}
+                        <ShieldPlus /> {challScore.defense.toFixed(2) ?? 0}
                       </span>
-                      <div className="col-span-2">
-                        <span className="text-error" title="Flag Captured">
-                          FC: {challScore.flag_captured ?? 0}
+
+                      <div className="flex flex-row items-center gap-2">
+                        <FlagCheckered />
+                        <span title="Flag Captured">
+                          {challScore.flag_captured ?? 0}
                         </span>{" "}
                         /{" "}
-                        <span className="text-success" title="Flag Stolen">
-                          FS: {challScore.flag_stolen ?? 0}
+                        <span title="Flag Stolen">
+                          {challScore.flag_stolen ?? 0}
                         </span>
                       </div>
-                      <span title="SLA">
-                        {(challScore.sla * 100).toFixed(2) ?? "?"}%
-                      </span>
-                      <span title="State">
-                        {serviceState === 0 ? "Faulty" : "Valid"}
-                      </span>
+
+                      <div
+                        className={clsx(
+                          "flex flex-row items-center gap-2",
+                          serviceState === 1 ? "text-success" : "text-error"
+                        )}
+                      >
+                        <span title="SLA">
+                          {(challScore.sla * 100).toFixed(2) ?? "?"}%
+                        </span>
+                        <span
+                          title="State"
+                          className="flex flex-row gap-1 items-center"
+                        >
+                          {serviceState === 0 ? (
+                            <>
+                              <ArrowDown /> Faulty
+                            </>
+                          ) : (
+                            <>
+                              <ArrowUp /> Valid
+                            </>
+                          )}
+                        </span>
+                      </div>
                     </div>
                   </td>
                 );

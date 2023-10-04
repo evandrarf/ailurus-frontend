@@ -1,12 +1,4 @@
-import {
-  Cloud,
-  Crown,
-  Flag,
-  HardDrives,
-  SignOut,
-  Users,
-  Wrench,
-} from "@phosphor-icons/react";
+import { Crown, Flag, MapTrifold, SignOut } from "@phosphor-icons/react";
 import React, { ReactElement, useEffect, useMemo } from "react";
 import type { Icon } from "@phosphor-icons/react";
 import { ComponentWithChildren } from "@/types/common";
@@ -50,7 +42,8 @@ export default function DashboardLayout({
   );
 
   useEffect(() => {
-    if (!!!authToken && router) router.replace("/");
+    if (!!!authToken && router)
+      router.replace(`/?goto=${encodeURIComponent(router.asPath)}`);
   }, [authToken, router]);
 
   return (
@@ -75,20 +68,21 @@ export default function DashboardLayout({
             href="/dashboard"
           />
           <ConfigMenu
-            icon={<Cloud size={24} />}
-            title="My Service"
-            href="/dashboard/service"
-          />
-          <ConfigMenu
             icon={<Crown size={24} />}
             title="Leaderboard"
             href="/leaderboard"
+          />
+          <ConfigMenu
+            icon={<MapTrifold size={24} />}
+            title="Attack Map"
+            href="/attackmap"
           />
 
           <a
             className="flex flex-row gap-2 items-center py-3 px-4 hover:bg-neutral rounded-r-full hover:cursor-pointer"
             onClick={() => {
               setAuthToken("");
+              router.replace("/");
             }}
           >
             <SignOut size={24} />

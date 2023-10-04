@@ -22,12 +22,14 @@ export default function Home() {
       }),
     onSuccess(data, variables, context) {
       setAuthToken(data.data);
-      router.push("/dashboard");
+      const goto = router.query.goto?.toString() ?? "/dashboard";
+      router.push(decodeURIComponent(goto));
     },
   });
 
   useEffect(() => {
-    if (authToken && router) router.replace("/dashboard");
+    const goto = router.query.goto?.toString() ?? "/dashboard";
+    if (authToken && router) router.replace(decodeURIComponent(goto));
   }, [authToken, router]);
 
   return (
@@ -69,9 +71,22 @@ export default function Home() {
         >
           Login
         </button>
-        <Link href="/leaderboard" className="btn btn-secondary mt-4">
-          Leaderboard
-        </Link>
+        <div className="grid grid-cols-2 gap-4">
+          <Link
+            href="/leaderboard"
+            className="btn btn-secondary mt-4"
+            target="_blank"
+          >
+            Leaderboard
+          </Link>
+          <Link
+            href="/attackmap"
+            className="btn btn-secondary mt-4"
+            target="_blank"
+          >
+            Attack Map
+          </Link>
+        </div>
       </div>
     </div>
   );
