@@ -39,6 +39,7 @@ function TeamServiceRow({
   });
 
   const { isFetching: statusFetching, data: status } = useQuery({
+    queryKey: ["admin", "services", "status", challId, teamId],
     queryFn: () =>
       getAdmin<number>(`admin/services/${challId}/teams/${teamId}/status`),
   });
