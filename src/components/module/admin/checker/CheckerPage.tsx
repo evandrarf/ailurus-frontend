@@ -26,17 +26,17 @@ function FilterPanel() {
   const searchParams = useSearchParams();
   const filterRef: { [index: string]: any } = {
     result: useRef<HTMLSelectElement>(null),
-    team: useRef<HTMLSelectElement>(null),
-    challenge: useRef<HTMLSelectElement>(null),
-  }
+    team_id: useRef<HTMLSelectElement>(null),
+    challenge_id: useRef<HTMLSelectElement>(null),
+  };
 
   const resetFiltering = () => {
     router.push("/admin/checker");
     for (const key in filterRef) {
       if (filterRef[key].current === undefined) continue;
-      filterRef[key].current.value = '*';
+      filterRef[key].current.value = "*";
     }
-  }
+  };
 
   const applyFiltering = () => {
     const query: { [index: string]: any } = {};
@@ -47,10 +47,10 @@ function FilterPanel() {
     }
 
     router.push({
-      pathname: '/admin/checker',
+      pathname: "/admin/checker",
       query: query,
     });
-  }
+  };
 
   return (
     <div className="border-solid border-2 border-slate-700 rounded-md mb-5 p-5">
@@ -59,7 +59,11 @@ function FilterPanel() {
           <label className="label">
             <span className="label-text">Result</span>
           </label>
-          <select ref={filterRef["result"]} value={searchParams.get("result") ?? undefined} className="select select-bordered">
+          <select
+            ref={filterRef["result"]}
+            value={searchParams.get("result") ?? undefined}
+            className="select select-bordered"
+          >
             <option>*</option>
             <option value="0">Fail</option>
             <option value="1">Ok</option>
@@ -69,7 +73,11 @@ function FilterPanel() {
           <label className="label">
             <span className="label-text">Challenge</span>
           </label>
-          <select ref={filterRef["challenge"]} value={searchParams.get("challenge") ?? undefined} className="select select-bordered">
+          <select
+            ref={filterRef["challenge_id"]}
+            value={searchParams.get("challenge") ?? undefined}
+            className="select select-bordered"
+          >
             <option>*</option>
             {challengesLoad ? (
               <></>
@@ -86,7 +94,11 @@ function FilterPanel() {
           <label className="label">
             <span className="label-text">Team</span>
           </label>
-          <select ref={filterRef["team"]} value={searchParams.get("team") ?? undefined} className="select select-bordered">
+          <select
+            ref={filterRef["team_id"]}
+            value={searchParams.get("team") ?? undefined}
+            className="select select-bordered"
+          >
             <option>*</option>
             {teamsLoad ? (
               <></>
@@ -101,8 +113,12 @@ function FilterPanel() {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-2 my-4">
-        <button onClick={resetFiltering} className="btn btn-secondary">Reset</button>
-        <button onClick={applyFiltering} className="btn btn-primary">Apply filter</button>
+        <button onClick={resetFiltering} className="btn btn-secondary">
+          Reset
+        </button>
+        <button onClick={applyFiltering} className="btn btn-primary">
+          Apply filter
+        </button>
       </div>
     </div>
   );
@@ -133,39 +149,41 @@ function CheckerPanel() {
       }),
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+  
   return (
     <div>
-      {isLoading ? (
-        <div className="flex min-h-screen items-center justify-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      ) : (
-        <div>
-          <table className="table table-zebra">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Time</th>
-                <th>Challenge</th>
-                <th>Team</th>
-                <th>Status</th>
-                <th>Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data.checkers.map((checker) => (
-                <CheckerRow data={checker} key={"checker-" + checker.id} />
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            activePage={data?.data.current_page ?? 1}
-            prevPage={data?.data.prev_page}
-            nextPage={data?.data.next_page}
-          />
-        </div>
-      )}
+      <div>
+        <table className="table table-zebra">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Time</th>
+              <th>Challenge</th>
+              <th>Team</th>
+              <th>Status</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.data.checkers.map((checker) => (
+              <CheckerRow data={checker} key={"checker-" + checker.id} />
+            ))}
+          </tbody>
+        </table>
+        <Pagination
+          activePage={data?.data.current_page ?? 1}
+          prevPage={data?.data.prev_page}
+          nextPage={data?.data.next_page}
+        />
+      </div>
     </div>
   );
 }
