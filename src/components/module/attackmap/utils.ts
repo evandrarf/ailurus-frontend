@@ -6,7 +6,7 @@ export function getCoordinates(pointId: number, teamLen: number) {
   const sizeY = 650 / numY;
 
   const rowNum = Math.floor(pointId / numX);
-  const posY = 150 + rowNum * sizeY;
+  const posY = 100 + rowNum * sizeY;
   var posX = 100 + (pointId % numX) * sizeX;
   if (rowNum % 2 == 1) {
     posX += sizeX / 2;
@@ -37,12 +37,13 @@ export function generateControlPoints(P0: Point, P3: Point) {
   // Define factors for controlling the shape of the curve
   var factor1 = 0.3; // Adjust this factor for different curves
   var factor2 = 0.7; // Adjust this factor for different curves
+  var factorX = 0;
 
   if (deltaY == 0) {
     deltaY = deltaX * 0.5;
     factor2 = factor1;
   }
-
+  if (deltaX == 0) factorX = 30;
   // Calculate control points based on the factors
   const P1: Point = {
     x: P0.x,
@@ -50,7 +51,7 @@ export function generateControlPoints(P0: Point, P3: Point) {
   };
 
   const P2: Point = {
-    x: P3.x,
+    x: P3.x - factorX,
     y: P3.y - factor2 * deltaY,
   };
 
