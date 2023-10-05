@@ -1,7 +1,10 @@
-import { BaseResponse } from "@/types/common";
+import { BaseResponse, ServerMode } from "@/types/common";
 import ky, { HTTPError } from "ky-universal";
 import { api } from "./base";
 import { toast } from "react-hot-toast";
+import { Challenge } from "@/types/challenge";
+import { useQuery } from "@tanstack/react-query";
+import { Team } from "@/types/team";
 
 type RequestFnArguments = Parameters<typeof api>;
 
@@ -78,3 +81,16 @@ export const patchAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
     },
     true
   );
+
+export const useAdminTeams = () =>
+  useQuery({
+    queryKey: ["admin", "teams"],
+    queryFn: () => getAdmin<Team<ServerMode>[]>("admin/teams/"),
+  });
+
+export const useAdminChallenges = () =>
+  useQuery({
+    queryKey: ["admin", "challenges"],
+    queryFn: () => getAdmin<Challenge<ServerMode>[]>("admin/challenges/"),
+  });
+
