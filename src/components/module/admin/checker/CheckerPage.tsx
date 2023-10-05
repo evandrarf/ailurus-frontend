@@ -7,7 +7,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Pagination } from "@/components/module/common/Pagination/Pagination";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
 const checkerResultMap: { [index: number]: string } = {
@@ -84,7 +84,7 @@ function FilterPanel() {
             ) : (
               <>
                 {challenges?.data.map((challenge) => (
-                  <option value={challenge.id}>{challenge.name}</option>
+                  <option value={challenge.id} key={"chall-opt-" + challenge.id}>{challenge.name}</option>
                 ))}
               </>
             )}
@@ -105,7 +105,7 @@ function FilterPanel() {
             ) : (
               <>
                 {teams?.data.map((team) => (
-                  <option value={team.id}>{team.name}</option>
+                  <option value={team.id} key={"team-opt-" + team.id}>{team.name}</option>
                 ))}
               </>
             )}
@@ -140,9 +140,10 @@ function CheckerRow({ data }: CheckerRowProps) {
 }
 
 function CheckerPanel() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { isLoading, data } = useQuery({
-    queryKey: ["submissions", searchParams.toString()],
+    queryKey: ["checkers", searchParams.toString()],
     queryFn: () =>
       getAdmin<CheckerResponse>("admin/checker/", {
         searchParams: searchParams,
@@ -156,7 +157,7 @@ function CheckerPanel() {
       </div>
     );
   }
-  
+
   return (
     <div>
       <div>
