@@ -51,13 +51,23 @@ export default function DashboardLayout({
       <div className="p-4 flex flex-row justify-between">
         <h1 className="text-2xl font-bold">{contest.event_name}</h1>
         <strong className="font-bold text-2xl">
-          {contest.event_status.state === "finished"
-            ? "Event Finished!"
-            : contest.event_status.state === "not started"
-            ? "Not Started"
-            : contest.event_status.state === "running"
-            ? `Round: ${contest.event_status.current_round} / Tick: ${contest.event_status.current_tick}`
-            : "Unknown event state"}
+          {contest.event_status.state === "finished" ? (
+            "Event Finished!"
+          ) : contest.event_status.state === "not started" ? (
+            "Not Started"
+          ) : contest.event_status.state === "running" ? (
+            <>
+              {contest.number_round > 1
+                ? `Round: ${contest.event_status.current_round}`
+                : ""}
+              {contest.number_round > 1 && contest.number_tick > 1 && " / "}
+              {contest.number_tick > 1
+                ? `Tick: ${contest.event_status.current_tick}`
+                : ""}
+            </>
+          ) : (
+            "Unknown event state"
+          )}
         </strong>
       </div>
       <div className="flex flex-row gap-8">
