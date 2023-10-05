@@ -84,7 +84,12 @@ function FilterPanel() {
             ) : (
               <>
                 {challenges?.data.map((challenge) => (
-                  <option value={challenge.id} key={"chall-opt-" + challenge.id}>{challenge.name}</option>
+                  <option
+                    value={challenge.id}
+                    key={"chall-opt-" + challenge.id}
+                  >
+                    {challenge.name}
+                  </option>
                 ))}
               </>
             )}
@@ -105,7 +110,9 @@ function FilterPanel() {
             ) : (
               <>
                 {teams?.data.map((team) => (
-                  <option value={team.id} key={"team-opt-" + team.id}>{team.name}</option>
+                  <option value={team.id} key={"team-opt-" + team.id}>
+                    {team.name}
+                  </option>
                 ))}
               </>
             )}
