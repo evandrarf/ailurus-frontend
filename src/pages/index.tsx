@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center px-4 py-16">
-      <div className="flex flex-row gap-4 items-center">
+      <div className="flex flex-col gap-4 items-center">
         <img
           src={
             contest.logo_url.length > 0
@@ -49,7 +49,7 @@ export default function Home() {
         />
 
         {process.env.NEXT_PUBLIC_SHOW_SPONSORS === "true" && (
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-row gap-4 items-center">
             <img src="/sponsors/sponsor.svg" alt="Sponsor" />
             <img src="/sponsors/media_partners.svg" alt="Sponsor" />
           </div>
