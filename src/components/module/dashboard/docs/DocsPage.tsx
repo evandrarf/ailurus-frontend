@@ -44,20 +44,20 @@ export default function DocsPage() {
     // Replace $$ expressions with KaTeX rendering
     const htmlWithMath = docsMenu[menuActive].content;
     const renderedHtml = htmlWithMath.replace(
-      /\$\$(.*?)\$\$/g,
+      /(?<!\\)\$\$(.*?)\$\$/g,
       (_, mathExpression) => {
         return katex.renderToString(mathExpression);
       }
     );
 
     // Replace $ expressions with KaTeX rendering
-    const finalRenderedHtml = renderedHtml.replace(
-      /\$(.*?)\$/g,
+    const secondRenderedHtml = renderedHtml.replace(
+      /(?<!\\)\$(.*?)\$/g,
       (_, mathExpression) => {
         return katex.renderToString(mathExpression, { displayMode: false });
       }
     );
-
+    const finalRenderedHtml = secondRenderedHtml.replaceAll("\\$", "$");
     setDocsContent(finalRenderedHtml);
   }, [menuActive, docsMenu]);
 
