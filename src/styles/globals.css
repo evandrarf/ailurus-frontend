@@ -14,11 +14,3 @@
 .challenge-desc a {
     @apply link;
 }
-/* 
-.docs-panel {
-    @apply card-body;
-}
-
-.docs-panel blockquote {
-    @apply alert;
-} */
