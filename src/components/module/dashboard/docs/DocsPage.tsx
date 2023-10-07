@@ -1,8 +1,8 @@
 import { getUser } from "@/components/fetcher/user";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import katex from 'katex';
-import 'katex/dist/katex.min.css';
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 interface DocsInterface {
   label: string;
@@ -22,36 +22,42 @@ function getDocs() {
     queryKey: ["scoreDoc"],
     queryFn: () => getUser<string>("docs/scoring"),
   });
-  return {apiDoc, patchDoc, scoreDoc};
+  return { apiDoc, patchDoc, scoreDoc };
 }
 
 export default function DocsPage() {
-  const {apiDoc, patchDoc, scoreDoc} = getDocs();
+  const { apiDoc, patchDoc, scoreDoc } = getDocs();
 
-  const docsMenu: {[index: string]: DocsInterface} = {
-    api: {label: "API", content: apiDoc?.data ?? ""},
-    patching: {label: "Patching", content: patchDoc?.data ?? ""},
-    scoring: {label: "Scoring", content: scoreDoc?.data ?? ""},
+  const docsMenu: { [index: string]: DocsInterface } = {
+    api: { label: "API", content: apiDoc?.data ?? "" },
+    patching: { label: "Patching", content: patchDoc?.data ?? "" },
+    scoring: { label: "Scoring", content: scoreDoc?.data ?? "" },
   };
 
   const [menuActive, setMenuActive] = useState("api");
   const [docsContent, setDocsContent] = useState(docsMenu["api"].content);
-  
+
   useEffect(() => {
     // Replace $$ expressions with KaTeX rendering
     const htmlWithMath = docsMenu[menuActive].content;
-    const renderedHtml = htmlWithMath.replace(/\$\$(.*?)\$\$/g, (_, mathExpression) => {
-      return katex.renderToString(mathExpression);
-    });
+    const renderedHtml = htmlWithMath.replace(
+      /\$\$(.*?)\$\$/g,
+      (_, mathExpression) => {
+        return katex.renderToString(mathExpression);
+      }
+    );
 
     // Replace $ expressions with KaTeX rendering
-    const finalRenderedHtml = renderedHtml.replace(/\$(.*?)\$/g, (_, mathExpression) => {
-      return katex.renderToString(mathExpression, { displayMode: false });
-    });
+    const finalRenderedHtml = renderedHtml.replace(
+      /\$(.*?)\$/g,
+      (_, mathExpression) => {
+        return katex.renderToString(mathExpression, { displayMode: false });
+      }
+    );
 
     setDocsContent(finalRenderedHtml);
   }, [menuActive]);
-  
+
   return (
     <div className="gap-4 px-4">
       <div className="tabs w-full justify-center">
@@ -60,7 +66,8 @@ export default function DocsPage() {
             key={`tab-docs-${key}`}
             onClick={() => setMenuActive(key)}
             className={
-              "tab tab-lg tab-bordered" + (menuActive == key ? " tab-active" : "")
+              "tab tab-lg tab-bordered" +
+              (menuActive == key ? " tab-active" : "")
             }
           >
             {docsMenu[key].label}
