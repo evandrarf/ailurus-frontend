@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind typography;
 @tailwind layout;
 
 .map-entity {
@@ -13,3 +14,11 @@
 .challenge-desc a {
     @apply link;
 }
+/* 
+.docs-panel {
+    @apply card-body;
+}
+
+.docs-panel blockquote {
+    @apply alert;
+} */
