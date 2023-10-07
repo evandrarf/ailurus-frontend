@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { postUser } from "@/components/fetcher/user";
 import { useContestContext } from "@/components/module/ContestContext";
 import { authTokenAtom } from "@/components/states";
@@ -33,18 +34,28 @@ export default function Home() {
   }, [authToken, router]);
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center px-4">
-      {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-      <img
-        src={
-          contest.logo_url.length > 0
-            ? contest.logo_url
-            : "https://media.discordapp.net/attachments/1107668994477019218/1137735995559772290/Logo_transparent.png?width=680&height=676"
-        }
-        width={680}
-        height={676}
-        className="max-h-64 object-scale-down"
-      />
+    <div className="flex flex-col min-h-screen items-center justify-center px-4 py-16">
+      <div className="flex flex-row gap-4 items-center">
+        <img
+          src={
+            contest.logo_url.length > 0
+              ? contest.logo_url
+              : "https://media.discordapp.net/attachments/1107668994477019218/1137735995559772290/Logo_transparent.png?width=680&height=676"
+          }
+          width={680}
+          height={676}
+          className="max-h-64 object-scale-down"
+          alt="logo"
+        />
+
+        {process.env.NEXT_PUBLIC_SHOW_SPONSORS === "true" && (
+          <div className="flex flex-col gap-4 items-center">
+            <img src="/sponsors/sponsor.svg" alt="Sponsor" />
+            <img src="/sponsors/media_partners.svg" alt="Sponsor" />
+          </div>
+        )}
+      </div>
+
       <h1 className="text-center font-bold text-4xl pt-12">
         {contest.event_name}
       </h1>
