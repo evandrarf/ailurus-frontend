@@ -56,7 +56,7 @@ export default function DocsPage() {
     );
 
     setDocsContent(finalRenderedHtml);
-  }, [menuActive]);
+  }, [menuActive, docsMenu]);
 
   return (
     <div className="gap-4 px-4">
@@ -77,6 +77,7 @@ export default function DocsPage() {
       <div className="p-4 rounded-md m-4">
         <article
           className="prose dark:prose-invert max-w-none"
+          style={{color: "white"}}
           dangerouslySetInnerHTML={{ __html: docsContent ?? "" }}
         ></article>
       </div>
