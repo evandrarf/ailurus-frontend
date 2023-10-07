@@ -1,7 +1,14 @@
 import BaseLayout from "@/components/layout/BaseLayout";
 import { ContestContextProvider } from "@/components/module/ContestContext";
+import { authTokenAtom } from "@/components/states";
 import "@/styles/globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { getDefaultStore } from "jotai";
+import { HTTPError } from "ky-universal";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import React, { ReactElement, ReactNode } from "react";
@@ -28,6 +35,16 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             refetchInterval: 10000,
           },
         },
+        queryCache: new QueryCache({
+          onError(error, query) {
+            if (error instanceof HTTPError) {
+              if (error.response.status === 403) {
+                const jotaiStore = getDefaultStore();
+                jotaiStore.set(authTokenAtom, "");
+              }
+            }
+          },
+        }),
       })
   );
   return (
