@@ -76,7 +76,7 @@ export default function DocsPage() {
       </div>
       <div className="p-4 rounded-md m-4">
         <article
-          className="prose dark:prose-stone max-w-none"
+          className="prose dark:prose-invert max-w-none"
           dangerouslySetInnerHTML={{ __html: docsContent ?? "" }}
         ></article>
       </div>
