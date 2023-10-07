@@ -2,7 +2,7 @@ import { useContestContext } from "@/components/module/ContestContext";
 import Leaderboard from "@/components/module/leaderboard/Leaderboard";
 import React from "react";
 
-export default function leaderboard() {
+export default function LeaderboardPage() {
   const { contest } = useContestContext();
 
   return (

@@ -1,7 +1,7 @@
 import { useContestContext } from "@/components/module/ContestContext";
 import AttackMapPage from "@/components/module/attackmap/AttackMapPage";
 
-export default function attackmap() {
+export default function AttackMap() {
   const { contest } = useContestContext();
   return (
     <div className="flex flex-col min-h-screen p-4 container mx-auto gap-4">

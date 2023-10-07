@@ -1,6 +1,6 @@
 import { getUser } from "@/components/fetcher/user";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
@@ -9,7 +9,7 @@ interface DocsInterface {
   content: string;
 }
 
-function getDocs() {
+function useDocs() {
   const { data: apiDoc } = useQuery({
     queryKey: ["apiDoc"],
     queryFn: () => getUser<string>("docs/api"),
@@ -26,13 +26,16 @@ function getDocs() {
 }
 
 export default function DocsPage() {
-  const { apiDoc, patchDoc, scoreDoc } = getDocs();
+  const { apiDoc, patchDoc, scoreDoc } = useDocs();
 
-  const docsMenu: { [index: string]: DocsInterface } = {
-    api: { label: "API", content: apiDoc?.data ?? "" },
-    patching: { label: "Patching", content: patchDoc?.data ?? "" },
-    scoring: { label: "Scoring", content: scoreDoc?.data ?? "" },
-  };
+  const docsMenu: { [index: string]: DocsInterface } = useMemo(
+    () => ({
+      api: { label: "API", content: apiDoc?.data ?? "" },
+      patching: { label: "Patching", content: patchDoc?.data ?? "" },
+      scoring: { label: "Scoring", content: scoreDoc?.data ?? "" },
+    }),
+    [apiDoc, patchDoc, scoreDoc]
+  );
 
   const [menuActive, setMenuActive] = useState("api");
   const [docsContent, setDocsContent] = useState(docsMenu["api"].content);
@@ -77,7 +80,7 @@ export default function DocsPage() {
       <div className="p-4 rounded-md m-4">
         <article
           className="prose dark:prose-invert max-w-none"
-          style={{color: "white"}}
+          style={{ color: "white" }}
           dangerouslySetInnerHTML={{ __html: docsContent ?? "" }}
         ></article>
       </div>
