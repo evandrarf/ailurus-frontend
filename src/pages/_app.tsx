@@ -38,7 +38,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         queryCache: new QueryCache({
           onError(error, query) {
             if (error instanceof HTTPError) {
-              if (error.response.status === 403) {
+              if (
+                error.response.status === 403 ||
+                error.response.status === 422
+              ) {
                 const jotaiStore = getDefaultStore();
                 jotaiStore.set(authTokenAtom, "");
               }

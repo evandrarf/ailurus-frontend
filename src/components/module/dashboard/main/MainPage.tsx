@@ -65,6 +65,10 @@ function ServiceRow({ chall }: ServiceRowProps) {
 
 export default function MainPage() {
   const { isLoading, error, data } = useUserChallenges();
+  useQuery({
+    queryKey: ["unlocked"],
+    queryFn: () => getUser<number[]>("my/solves"),
+  });
   const [flag, setFlag] = useState("");
   const submitFlag = useMutation({
     mutationFn: (flag: string) =>
