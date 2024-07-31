@@ -1,4 +1,3 @@
-import BaseLayout from "@/components/layout/BaseLayout";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {

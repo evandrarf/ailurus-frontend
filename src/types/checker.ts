@@ -7,13 +7,13 @@ export interface Checker {
   round: number;
   tick: number;
   time_created: string;
-  result: number;
-  message: string;
+  status: number;
+  detail: string;
 }
 
 export interface CheckerResponse {
   next_page: number | undefined;
   prev_page: number | undefined;
   current_page: number;
-  checkers: Checker[];
+  data: Checker[];
 }

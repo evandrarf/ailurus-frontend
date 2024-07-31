@@ -19,7 +19,7 @@ async function doApi<T, TExtra = {}>(
     const response = await api(url, {
       ...options,
       headers: {
-        "X-ADCE-SECRET": JSON.parse(localStorage.getItem("adminToken") ?? ""),
+        "X-ADMIN-SECRET": JSON.parse(localStorage.getItem("adminToken") ?? ""),
       },
     }).json<BaseResponse<T, TExtra>>();
     if (notify) toast.success(response.message ?? "Success", { id: toastId });
@@ -85,12 +85,12 @@ export const patchAdmin = <T, TExtra = {}>(...args: RequestFnArguments) =>
 export const useAdminTeams = () =>
   useQuery({
     queryKey: ["admin", "teams"],
-    queryFn: () => getAdmin<Team<ServerMode>[]>("admin/teams/"),
+    queryFn: () => getAdmin<Team[]>("admin/teams/"),
   });
 
 export const useAdminChallenges = () =>
   useQuery({
     queryKey: ["admin", "challenges"],
-    queryFn: () => getAdmin<Challenge<ServerMode>[]>("admin/challenges/"),
+    queryFn: () => getAdmin<Challenge[]>("admin/challenges/"),
   });
 

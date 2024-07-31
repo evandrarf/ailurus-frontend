@@ -68,13 +68,13 @@ export const putUser = <T, TExtra = {}>(...args: RequestFnArguments) =>
 export const useUserTeams = () =>
   useQuery({
     queryKey: ["teams"],
-    queryFn: () => getUser<Team<ServerMode>[]>("teams/"),
+    queryFn: () => getUser<Team[]>("teams/"),
   });
 
 export const useUserChallenges = () =>
   useQuery({
     queryKey: ["user", "challenges"],
-    queryFn: () => getUser<Challenge<ServerMode>[]>("challenges/"),
+    queryFn: () => getUser<Challenge[]>("challenges/"),
   });
 
 export const useUserServices = () =>
@@ -87,7 +87,7 @@ export const useUserServicesStatus = () =>
   useQuery({
     queryKey: ["user", "services", "status"],
     queryFn: () =>
-      getUser<Record<string, Record<string, ServerState>>>("services/status"),
+      getUser<Record<string, Record<string, ServerState>>>("services-status"),
   });
 
 export const useUserResources = () => {
@@ -108,6 +108,27 @@ export const useUserResources = () => {
       teams: teams.data!,
       challenges: challenges.data!,
       services: services.data!,
+      serviceStatus: serviceStatus.data!,
+    },
+  };
+};
+
+
+export const usePublicResources = () => {
+  const teams = useUserTeams();
+  const challenges = useUserChallenges();
+  const serviceStatus = useUserServicesStatus();
+
+  return {
+    isLoading:
+      teams.isLoading ||
+      challenges.isLoading ||
+      serviceStatus.isLoading,
+    error:
+      teams.error || challenges.error || serviceStatus.error,
+    datas: {
+      teams: teams.data!,
+      challenges: challenges.data!,
       serviceStatus: serviceStatus.data!,
     },
   };
