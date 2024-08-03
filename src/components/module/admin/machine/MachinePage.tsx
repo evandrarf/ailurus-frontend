@@ -9,7 +9,7 @@ function MachineRow({ machine }: { machine: ProvisionMachine }) {
   const deleteMachine = useMutation({
     mutationFn: () => deleteAdmin(`admin/machines/${machine.id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries(["machines"]);
+      queryClient.invalidateQueries({queryKey: ["machines"]});
     },
   });
   return (
