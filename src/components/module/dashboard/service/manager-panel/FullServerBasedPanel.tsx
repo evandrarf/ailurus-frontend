@@ -2,7 +2,7 @@ import { useMutation, useQueries } from "@tanstack/react-query";
 import { TeamChallServiceProps } from "../interface";
 import { ServerState, ServiceMeta } from "@/types/service";
 import { getUser, postUser } from "@/components/fetcher/user";
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import { ArrowDown, ArrowUp, Lock } from "@phosphor-icons/react";
 import ConfirmModal from "@/components/module/common/Modal/ConfirmModal";
 
@@ -30,19 +30,40 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
         }),
     });
 
-    const faultyDisplay = (
+    const capitalizeWords = (str: string) => {
+      console.log(str);
+      return str.replace(/\b\w/g, c => c.toUpperCase())
+    };
+    
+    const faultyDisplay = (statusDetail: string | undefined) => (
       <span className="text-error items-center gap-2">
-        <ArrowDown size={20} className="inline" />
-        {" Faulty"}
+        <ArrowDown size={20} className="inline" />&nbsp;
+        {typeof statusDetail === "string" ? capitalizeWords(statusDetail):"Faulty"}
       </span>
     );
-    const validDisplay = (
+    const validDisplay = (statusDetail: string | undefined) => (
       <span className="text-success items-center gap-2">
-        <ArrowUp size={20} className="inline" />
-        {" Valid"}
+        <ArrowUp size={20} className="inline" />&nbsp;
+        {typeof statusDetail === "string" ? capitalizeWords(statusDetail):"Valid"}
       </span>
     );
   
+    const handleDownload = (textContent: string) => {
+      const filename = 'privatekey.pem';
+      const content = textContent;
+  
+      if ('download' in HTMLAnchorElement.prototype) {
+        // For modern browsers
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+    };
+
     return (
       <div className="p-4 rounded-md bg-neutral">
         <div className="px-4 pt-4">
@@ -55,8 +76,8 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
                 : statusQuery.error
                 ? "An error occured"
                 : (statusQuery.data?.data?.status == 0 || statusQuery.data?.data?.status == undefined)
-                ? faultyDisplay
-                : validDisplay}
+                ? faultyDisplay(statusQuery.data?.data?.detail)
+                : validDisplay(statusQuery.data?.data?.detail)}
             </span>{" "}
             ]{"  "}
             {chall?.title ?? "ChallengeNotFound"}{" "}
@@ -71,7 +92,10 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
               {credsQuery.data ?
                 Object.entries(credsQuery.data?.data).map(([key, value]) => (
                   <div className="my-2" key={key}>
-                    <strong className="gap-2">{key}:</strong>
+                    <div className="mb-2">
+                      <strong className="gap-2">{key}:</strong>
+                      {/key/i.test(key) ? <button className="btn btn-sm btn-primary mx-2" onClick={() => handleDownload(value)}>Download Key</button>:<></>}
+                    </div>
                     <pre className="p-4 rounded-md bg-base-300">
                       {typeof value === 'string' ? value:JSON.stringify(value, null, 2)}
                     </pre>
@@ -84,7 +108,7 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
     
               <div className="flex flex-row gap-2">
                 <ConfirmModal
-                  action="reset"
+                  action="Reset"
                   btn={<button className="btn btn-error">Reset</button>}
                   onAction={() => resetService.mutate()}
                 >
