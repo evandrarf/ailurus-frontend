@@ -7,6 +7,12 @@ import ConfirmModal from "../../common/Modal/ConfirmModal";
 import ServiceDetailModal from "./ServiceDetailModal";
 
 function ServiceRow({chall, team} : {chall: Challenge, team: Team}) {
+  const restartMutation = useMutation({
+    mutationFn: () =>
+      postAdmin(`admin/teams/${team.id}/challenges/${chall.id}/service-manager/?action=restart`, {
+        json: { confirm: true },
+      }),
+  });
   const resetMutation = useMutation({
     mutationFn: () =>
       postAdmin(`admin/teams/${team.id}/challenges/${chall.id}/service-manager/?action=reset`, {
@@ -25,6 +31,13 @@ function ServiceRow({chall, team} : {chall: Challenge, team: Team}) {
         json: { confirm: true },
       }),
   });
+  const buildImageMutation = useMutation({
+    mutationFn: () =>
+      postAdmin(`admin/teams/${team.id}/challenges/${chall.id}/service-manager/?action=build_image`, {
+        json: { confirm: true },
+      }),
+  });
+
 
   return (
     <div
@@ -45,6 +58,14 @@ function ServiceRow({chall, team} : {chall: Challenge, team: Team}) {
           }
         />
         <ConfirmModal
+          action="Build Image"
+          btn={<button className="btn btn-accent btn-sm">Build Image</button>}
+          onAction={() => buildImageMutation.mutate()}
+        >
+          Service image for team <strong>{team.name}</strong> in challenge <strong>{chall.title}</strong>&nbsp;
+          will be <u>build</u>. Are you sure?
+        </ConfirmModal>
+        <ConfirmModal
           action="Provision"
           btn={<button className="btn btn-accent btn-sm">Provision</button>}
           onAction={() => provisionMutation.mutate()}
@@ -59,6 +80,14 @@ function ServiceRow({chall, team} : {chall: Challenge, team: Team}) {
         >
           Service for team <strong>{team.name}</strong> in challenge <strong>{chall.title}</strong>&nbsp;
           will be <u>reset</u>. Are you sure?
+        </ConfirmModal>
+        <ConfirmModal
+          action="Restart"
+          btn={<button className="btn btn-warning btn-sm">Restart</button>}
+          onAction={() => restartMutation.mutate()}
+        >
+          Service for team <strong>{team.name}</strong> in challenge <strong>{chall.title}</strong>&nbsp;
+          will be <u>restart</u>. Are you sure?
         </ConfirmModal>
         <ConfirmModal
           action="Delete"

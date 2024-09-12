@@ -29,6 +29,12 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
           json: { confirm: true },
         }),
     });
+    const restartService = useMutation({
+      mutationFn: () =>
+        postUser(`my/challenges/${chall?.id}/service-manager/?action=reset`, {
+          json: { confirm: true },
+        }),
+    });
 
     const capitalizeWords = (str: string) => {
       console.log(str);
@@ -107,6 +113,13 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
               <div className="divider m-0" />
     
               <div className="flex flex-row gap-2">
+              <ConfirmModal
+                  action="Restart"
+                  btn={<button className="btn btn-error">Restart</button>}
+                  onAction={() => restartService.mutate()}
+                >
+                  Are you sure you want to restart?
+                </ConfirmModal>
                 <ConfirmModal
                   action="Reset"
                   btn={<button className="btn btn-error">Reset</button>}
@@ -118,7 +131,7 @@ export default function FullServerBasedPanel({ chall, isUnlocked }: TeamChallSer
             </>              
           ) : (
             <div className="p-4 bg-base-300 rounded-md">
-              Cannot patch. You have not solved this challenge!
+              Cannot manage. You have not solved this challenge!
             </div>
           )}
         </div>
