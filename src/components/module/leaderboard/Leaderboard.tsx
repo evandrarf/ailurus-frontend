@@ -82,7 +82,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                   <td>
                     <div className="flex flex-col gap-2">
                       <strong className="font-bold">{team.name}</strong>
-                      {/* <span title="Total Score">{team.total_score.toFixed(2)}</span> */}
+                      <span title="Total Score">{team.total_score.toFixed(2)}</span>
                     </div>
                   </td>
 
