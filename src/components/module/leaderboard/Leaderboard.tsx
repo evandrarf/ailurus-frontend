@@ -1,5 +1,6 @@
 import { getAdmin } from "@/components/fetcher/admin";
 import { getUser, usePublicResources } from "@/components/fetcher/user";
+import { ChallengePublic } from "@/types/challenge";
 import { ChallengeScore, Score } from "@/types/scoreboard";
 import {
   ArrowDown,
@@ -23,8 +24,8 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
     queryKey: ["leaderboard", isAdmin ? "admin" : "user"],
     queryFn: () =>
       isAdmin
-        ? getAdmin<Score[]>("admin/leaderboard/")
-        : getUser<Score[], { is_freeze: boolean }>("leaderboard/"),
+        ? getAdmin<Score[], { challenges: ChallengePublic[] }>("admin/leaderboard/")
+        : getUser<Score[], { is_freeze: boolean, challenges: ChallengePublic[]}>("leaderboard/"),
   });
 
   if (userResourcesQuery.isLoading || scoreboardQuery.isLoading) {
@@ -68,7 +69,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
               <tr>
                 <th></th>
                 <th>Team</th>
-                {userResourcesQuery.datas.challenges.data.map((chall) => (
+                {scoreboardQuery.data?.challenges?.map((chall) => (
                   <th key={chall.id} className="w-40">
                     {chall.title}
                   </th>
@@ -86,7 +87,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                     </div>
                   </td>
 
-                  {userResourcesQuery.datas.challenges.data.map((chall) => {
+                  {scoreboardQuery.data?.challenges?.map((chall) => {
                     const challScore: ChallengeScore | undefined =
                       team.challenges[chall.id.toString()];
                     const serviceState =

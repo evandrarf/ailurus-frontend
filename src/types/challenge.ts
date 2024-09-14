@@ -1,7 +1,10 @@
-export type Challenge = {
+export type ChallengePublic = {
   id: number;
-  slug: string;
   title: string;
+};
+
+export type Challenge = ChallengePublic & {
+  slug: string;
   description: string | undefined;
   description_raw: string | undefined;
 };
