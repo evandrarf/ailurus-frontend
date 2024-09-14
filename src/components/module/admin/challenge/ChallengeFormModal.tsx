@@ -47,20 +47,20 @@ function ChallengeForm({ chall, mode, challId, onSave }: ChallengeFormProps) {
         }
         formData.append("data", JSON.stringify([finalChallData]));
         form.reset();
-        return postAdmin("admin/challenges/", { body: formData });
+        return postAdmin("admin/challenges/", { body: formData, timeout: false });
       }
       
       if (testcaseFile?.item(0)) {
         const formData = new FormData();
         formData.append('testcase', testcaseFile[0]);
-        postAdmin(`admin/challenges/${challId}/testcase`, { body: formData });
+        postAdmin(`admin/challenges/${challId}/testcase`, { body: formData, timeout: false });
         form.resetField("testcase");
       }
 
       if (artifactFile?.item(0)) {
         const formData = new FormData();
         formData.append('artifact', artifactFile[0]);
-        postAdmin(`admin/challenges/${challId}/artifact`, { body: formData });
+        postAdmin(`admin/challenges/${challId}/artifact`, { body: formData, timeout: false });
         form.resetField("artifact");
       }
 
