@@ -40,20 +40,32 @@ function TeamServiceRow({
 }: TeamServiceRowProps) {
   const { isFetching: statusFetching, data: status } = useUserServicesStatus();
   const state = status?.data[challId.toString()]?.[teamId.toString()]?.status;
-  const stateDetail = status?.data[challId.toString()]?.[teamId.toString()]?.detail;
+  const stateDetail =
+    status?.data[challId.toString()]?.[teamId.toString()]?.detail;
 
-  const capitalizeWords = (str: string) => str.replace(/\b\w/g, c => c.toUpperCase());
-    
-  const faultyDisplay = (statusDetail: string | undefined) => (
+  const capitalizeWords = (str: string) =>
+    str.replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const faultyDisplay = (
+    statusDetail: string | Record<string, any> | undefined
+  ) => (
     <span className="text-error items-center gap-2">
-      <ArrowDown size={20} className="inline" />&nbsp;
-      {statusDetail ? capitalizeWords(statusDetail):"Faulty"}
+      <ArrowDown size={20} className="inline" />
+      &nbsp;
+      {statusDetail && typeof statusDetail === "string"
+        ? capitalizeWords(statusDetail)
+        : "Faulty"}
     </span>
   );
-  const validDisplay = (statusDetail: string | undefined) => (
+  const validDisplay = (
+    statusDetail: string | Record<string, any> | undefined
+  ) => (
     <span className="text-success items-center gap-2">
-      <ArrowUp size={20} className="inline" />&nbsp;
-      {statusDetail ? capitalizeWords(statusDetail):"Valid"}
+      <ArrowUp size={20} className="inline" />
+      &nbsp;
+      {statusDetail && typeof statusDetail === "string"
+        ? capitalizeWords(statusDetail)
+        : "Valid"}
     </span>
   );
 
@@ -74,13 +86,21 @@ function TeamServiceRow({
           </span>
         </div>
         <ul className="list-inside">
-          {serviceDatas == null || serviceDatas == undefined ? <></>:
-            typeof serviceDatas === "string" ? serviceDatas:
-            typeof Array.isArray(serviceDatas) ? Array.from(serviceDatas as string[]).map((data, index) => (
-                typeof data === "string" ? <li key={index}>{data}</li>:<li key={index}>{JSON.stringify(data)}</li>
-              )):
-              JSON.stringify(serviceDatas)
-          }
+          {serviceDatas == null || serviceDatas == undefined ? (
+            <></>
+          ) : typeof serviceDatas === "string" ? (
+            serviceDatas
+          ) : typeof Array.isArray(serviceDatas) ? (
+            Array.from(serviceDatas as string[]).map((data, index) =>
+              typeof data === "string" ? (
+                <li key={index}>{data}</li>
+              ) : (
+                <li key={index}>{JSON.stringify(data)}</li>
+              )
+            )
+          ) : (
+            JSON.stringify(serviceDatas)
+          )}
         </ul>
       </div>
       <div>
