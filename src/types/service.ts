@@ -7,9 +7,9 @@ export type ServiceList = Record<ChallengeKey, Record<TeamKey, Address[]>>;
 type Faulty = 0;
 type Valid = 1;
 export type ServerState = {
-  detail: string;
+  detail: string | Record<string, any>;
   status: Faulty | Valid;
-}
+};
 
 export interface ServiceMeta {
   log: string;

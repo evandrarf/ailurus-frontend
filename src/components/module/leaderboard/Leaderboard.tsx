@@ -24,8 +24,13 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
     queryKey: ["leaderboard", isAdmin ? "admin" : "user"],
     queryFn: () =>
       isAdmin
-        ? getAdmin<Score[], { challenges: ChallengePublic[] }>("admin/leaderboard/")
-        : getUser<Score[], { is_freeze: boolean, challenges: ChallengePublic[]}>("leaderboard/"),
+        ? getAdmin<Score[], { challenges: ChallengePublic[] }>(
+            "admin/leaderboard/"
+          )
+        : getUser<
+            Score[],
+            { is_freeze: boolean; challenges: ChallengePublic[] }
+          >("leaderboard/"),
   });
 
   if (userResourcesQuery.isLoading || scoreboardQuery.isLoading) {
@@ -43,8 +48,9 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
       </div>
     );
   }
-  
-  const capitalizeWords = (str: string) => str.replace(/\b\w/g, c => c.toUpperCase());
+
+  const capitalizeWords = (str: string) =>
+    str.replace(/\b\w/g, (c) => c.toUpperCase());
 
   return (
     <div className={className}>
@@ -55,14 +61,13 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
             Leaderboard is frozen.
           </div>
         )}
-      {
-        scoreboardQuery?.data?.data.length === 0 ?
+      {scoreboardQuery?.data?.data.length === 0 ? (
         <>
           <div className="flex min-h-screen items-center justify-center">
             Leaderboard is empty.
           </div>
         </>
-        :
+      ) : (
         <>
           <table className="table">
             <thead>
@@ -83,7 +88,9 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                   <td>
                     <div className="flex flex-col gap-2">
                       <strong className="font-bold">{team.name}</strong>
-                      <span title="Total Score">{team.total_score.toFixed(2)}</span>
+                      <span title="Total Score">
+                        {team.total_score.toFixed(2)}
+                      </span>
                     </div>
                   </td>
 
@@ -94,7 +101,8 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                       userResourcesQuery.datas.serviceStatus.data[
                         chall.id.toString()
                       ]?.[team.id.toString()]?.status ?? 1;
-                    const serviceStateDetail = userResourcesQuery.datas.serviceStatus.data[
+                    const serviceStateDetail =
+                      userResourcesQuery.datas.serviceStatus.data[
                         chall.id.toString()
                       ]?.[team.id.toString()]?.detail;
                     return (
@@ -145,9 +153,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                                 </>
                               )}
                             </span>
-                            <span title="SLA">
-                              {challScore.sla ?? "100%"}
-                            </span>
+                            <span title="SLA">{challScore.sla ?? "100%"}</span>
                           </div>
 
                           <div
@@ -162,11 +168,30 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
                             >
                               {serviceState === 1 ? (
                                 <>
-                                  {serviceStateDetail ? capitalizeWords(serviceStateDetail):"Valid"}
+                                  {serviceStateDetail &&
+                                  typeof serviceStateDetail === "string"
+                                    ? capitalizeWords(serviceStateDetail)
+                                    : "Valid"}
                                 </>
                               ) : (
                                 <>
-                                  {serviceStateDetail ? capitalizeWords(serviceStateDetail):"Faulty"}
+                                  {serviceStateDetail ? (
+                                    typeof serviceStateDetail === "string" ? (
+                                      capitalizeWords(serviceStateDetail)
+                                    ) : (
+                                      <div className="flex flex-col gap-2">
+                                        {Object.entries(serviceStateDetail).map(
+                                          ([key, value], idx) => (
+                                            <p key={`${key}-${idx}`}>
+                                              {key} : {value.check1}
+                                            </p>
+                                          )
+                                        )}
+                                      </div>
+                                    )
+                                  ) : (
+                                    "Faulty"
+                                  )}
                                 </>
                               )}
                             </span>
@@ -180,7 +205,7 @@ export default function Leaderboard({ isAdmin, className }: LeaderboardProps) {
             </tbody>
           </table>
         </>
-      }
+      )}
     </div>
   );
 }
